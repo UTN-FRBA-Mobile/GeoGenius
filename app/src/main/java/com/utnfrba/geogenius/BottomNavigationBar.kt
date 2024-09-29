@@ -2,13 +2,11 @@ package com.utnfrba.geogenius
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,20 +33,26 @@ fun BottomNavigationBar() {
             Icons.Outlined.LocationOn,
             ImageVector.vectorResource(R.drawable.baseline_bookmark_border_24)
         )
-    NavigationBar {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = {
-                    Icon(if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
-                    contentDescription = item)
-                   },
-                selected = selectedItem == index,
-                onClick = { selectedItem = index },
-                label = { Text(item) }
-            )
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        icon = {
+                            Icon(if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
+                                contentDescription = item)
+                        },
+                        selected = selectedItem == index,
+                        onClick = { selectedItem = index },
+                        label = { Text(item) }
+                    )
+                }
+            }
         }
-        // Ask why not all icons are here
+    ){ paddingValues ->
+
     }
+
 }
 
 @Preview
