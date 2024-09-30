@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             GeoGeniusTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    BottomNavigationBar()
                     Greeting(
                         name = "UTN",
                         modifier = Modifier.padding(innerPadding)
