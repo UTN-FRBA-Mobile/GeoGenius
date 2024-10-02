@@ -57,21 +57,20 @@ fun BottomNavigationBar() {
         ) {
             composable(Screen.Filter.toString()){
                 Box() {
-                    Text("hola filtros")
+                    Text(Screen.Filter.toString())
                 }
             }
             composable(Screen.Map.toString()){
                 Box() {
-                    Text("hola mpaa")
+                    Text(Screen.Map.toString())
                 }
             }
             composable(Screen.Bookmark.toString()) {
                 Box() {
-                    Text("hola bokm")
+                    Text(Screen.Bookmark.toString())
                 }
             }
         }
-//        https://medium.com/@bharadwaj.rns/bottom-navigation-in-jetpack-compose-using-material3-c153ccbf0593
     }
 
 }
