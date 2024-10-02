@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.utnfrba.geogenius.navbar.BottomNavigationBar
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GeoGeniusTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "UTN",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    BottomNavigationBar()
                 }
             }
         }
