@@ -6,12 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.utnfrba.geogenius.bookmarkscreen.PlaceCard
+import com.utnfrba.geogenius.bookmarkscreen.PlaceModel
 import com.utnfrba.geogenius.bookmarkscreen.samplePlace
 
 @Composable
-fun BookmarkScreen() {
-    val places = listOf(samplePlace, samplePlace, samplePlace, samplePlace)
-
+fun BookmarkScreen(places: List<PlaceModel>) {
     LazyColumn {
         items(places) { place ->
             PlaceCard(
@@ -26,5 +25,5 @@ fun BookmarkScreen() {
 @Preview(showBackground = true)
 @Composable
 fun SavedScreenPreview() {
-    BookmarkScreen()
+    BookmarkScreen(listOf(samplePlace, samplePlace))
 }
