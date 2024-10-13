@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.navbar
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -18,6 +17,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.utnfrba.geogenius.screens.BookmarkScreen
+import com.utnfrba.geogenius.screens.FilterScreen
+import com.utnfrba.geogenius.screens.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 @Composable
@@ -51,24 +53,18 @@ fun BottomNavigationBar() {
             }
         }
     ){ paddingValues ->
-        NavHost(navController = navController,
+        NavHost(navController,
             startDestination = Screen.Map.toString(),
-            modifier = Modifier.padding(paddingValues = paddingValues)
+            modifier = Modifier.padding(paddingValues)
         ) {
             composable(Screen.Filter.toString()){
-                Box() {
-                    Text(Screen.Filter.toString())
-                }
+                FilterScreen()
             }
             composable(Screen.Map.toString()){
-                Box() {
-                    Text(Screen.Map.toString())
-                }
+                MapScreen()
             }
             composable(Screen.Bookmark.toString()) {
-                Box() {
-                    Text(Screen.Bookmark.toString())
-                }
+                BookmarkScreen()
             }
         }
     }
