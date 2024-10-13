@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.utnfrba.geogenius.screens.BookmarkScreen
 import com.utnfrba.geogenius.screens.FilterScreen
-import com.utnfrba.geogenius.screens.MapScreen
+import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 @Composable
