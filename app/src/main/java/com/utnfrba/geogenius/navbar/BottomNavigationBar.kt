@@ -12,7 +12,9 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -62,7 +64,7 @@ fun BottomNavigationBar() {
                 FilterScreen()
             }
             composable(Screen.Map.toString()){
-                MapScreen()
+                MapScreen(activity = LocalContext.current as FragmentActivity)
             }
             composable(Screen.Bookmark.toString()) {
                 BookmarkScreen(listOf(samplePlace, samplePlace))
