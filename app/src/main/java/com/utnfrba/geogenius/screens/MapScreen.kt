@@ -1,29 +1,41 @@
 package com.utnfrba.geogenius.screens
 
+import android.content.Context
+import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.utnfrba.geogenius.R
 
 @Composable
-fun MapScreen(activity: FragmentActivity) {
-    AndroidView(
-        factory = {
-            val mapFragment = activity.supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-            mapFragment.getMapAsync { googleMap ->
-                val obelisc = LatLng(-34.6034743, -58.3833134)
-                googleMap.addMarker(
-                    MarkerOptions().position(obelisc).title("Marcador en Buenos Aires")
-                )
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(obelisc, 12f))
-            }
-            mapFragment.requireView()
+fun MapScreen() {
+    val context = LocalContext.current
+    val mapView = rememberMapViewWithLifecycle(context)
+
+    AndroidView({ mapView }) {
+        mapView.getMapAsync { googleMap ->
+            val obelisc = LatLng(-34.6034743, -58.3833134)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(obelisc, 12f))
         }
-    )
+    }
+}
+
+@Composable
+fun rememberMapViewWithLifecycle(context: Context): MapView {
+    val mapView = MapView(context)
+    DisposableEffect(mapView) {
+        mapView.onCreate(Bundle())
+        mapView.onStart()
+        mapView.onResume()
+
+        onDispose {
+            mapView.onPause()
+            mapView.onStop()
+            mapView.onDestroy()
+        }
+    }
+    return mapView
 }
