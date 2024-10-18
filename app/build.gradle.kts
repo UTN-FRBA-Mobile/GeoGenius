@@ -60,7 +60,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")
+    implementation(libs.coil.compose)
+    // For AppWidgets support
+    implementation(libs.androidx.glance.appwidget)
+    // For interop APIs with Material
+    implementation(libs.androidx.glance.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
