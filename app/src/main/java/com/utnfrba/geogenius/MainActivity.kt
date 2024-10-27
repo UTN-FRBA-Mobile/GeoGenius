@@ -1,5 +1,6 @@
 package com.utnfrba.geogenius
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,12 +12,13 @@ import com.utnfrba.geogenius.navbar.BottomNavigationBar
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             GeoGeniusTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()) {
                     BottomNavigationBar()
                 }
             }
