@@ -32,43 +32,44 @@ fun FilterScreen() {
     var museoChecked by remember { mutableStateOf(false) }
     var parqueChecked by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
-            CheckboxWithLabel(
-                checked = cafeChecked,
-                onCheckedChange = { cafeChecked = it },
-                label = "Cafés"
-            )
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                CheckboxWithLabel(
+                    checked = cafeChecked,
+                    onCheckedChange = { cafeChecked = it },
+                    label = "Cafés"
+                )
 
-            CheckboxWithLabel(
-                checked = museoChecked,
-                onCheckedChange = { museoChecked = it },
-                label = "Museos"
-            )
+                CheckboxWithLabel(
+                    checked = museoChecked,
+                    onCheckedChange = { museoChecked = it },
+                    label = "Museos"
+                )
 
-            CheckboxWithLabel(
-                checked = parqueChecked,
-                onCheckedChange = { parqueChecked = it },
-                label = "Parques"
-            )
+                CheckboxWithLabel(
+                    checked = parqueChecked,
+                    onCheckedChange = { parqueChecked = it },
+                    label = "Parques"
+                )
+            }
         }
+
+    val marsViewModel: MarsViewModel = viewModel()
+    when (val now = marsViewModel.marsUiState) {
+        is MarsUiState.Loading -> Text("Loading")
+        is MarsUiState.Success -> Text(
+            "Photos length: " + now.photos.length.toString()
+        )
+        is MarsUiState.Error -> Text("Error")
     }
-    Box {
-        val marsViewModel: MarsViewModel = viewModel()
-        when (val now = marsViewModel.marsUiState) {
-            is MarsUiState.Loading -> Text("Loading")
-            is MarsUiState.Success -> Text(
-                "Photos length: " + now.photos.length.toString()
-            )
-            is MarsUiState.Error -> Text("Error")
-        }
-    }
+
 }
 
 @Composable
