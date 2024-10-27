@@ -37,7 +37,6 @@ fun SettingsMenu() {
             )
             Text(text = widgetCount.toInt().toString())
         }
-        // here the filters? or max widget count
     }
 }
 
