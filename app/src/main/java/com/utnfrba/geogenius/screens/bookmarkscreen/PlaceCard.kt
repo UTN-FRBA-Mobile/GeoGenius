@@ -1,4 +1,4 @@
-package com.utnfrba.geogenius.bookmarkscreen
+package com.utnfrba.geogenius.screens.bookmarkscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

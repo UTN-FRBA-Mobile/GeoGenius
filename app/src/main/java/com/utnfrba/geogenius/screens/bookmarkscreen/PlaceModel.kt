@@ -1,4 +1,4 @@
-package com.utnfrba.geogenius.bookmarkscreen
+package com.utnfrba.geogenius.screens.bookmarkscreen
 
 data class PlaceModel(
     val id: String,
