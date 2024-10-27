@@ -23,9 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.utnfrba.geogenius.R
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun FilterScreen() {
+
     var cafeChecked by remember { mutableStateOf(false) }
     var museoChecked by remember { mutableStateOf(false) }
     var parqueChecked by remember { mutableStateOf(false) }
@@ -55,6 +57,16 @@ fun FilterScreen() {
                 onCheckedChange = { parqueChecked = it },
                 label = "Parques"
             )
+        }
+    }
+    Box {
+        val marsViewModel: MarsViewModel = viewModel()
+        when (val now = marsViewModel.marsUiState) {
+            is MarsUiState.Loading -> Text("Loading")
+            is MarsUiState.Success -> Text(
+                "Photos length: " + now.photos.length.toString()
+            )
+            is MarsUiState.Error -> Text("Error")
         }
     }
 }
