@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
