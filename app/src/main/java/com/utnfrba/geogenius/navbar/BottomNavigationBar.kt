@@ -45,12 +45,15 @@ fun BottomNavigationBar() {
                         selected = selectedItem == index,
                         onClick = {
                             selectedItem = index
-                            navController.navigate(item.route.toString()) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+
+                            if (navController.currentDestination?.route != item.route.toString()) {
+                                navController.navigate(item.route.toString()) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
                             }
                         },
                         label = { Text(item.label) }
@@ -78,7 +81,7 @@ fun BottomNavigationBar() {
                 route = Screen.PlaceDetail.route + "/{placeId}",
                 arguments = listOf(navArgument("placeId") { type = NavType.StringType })
             ) { entry ->
-                PlaceDetailScreen(placeId = entry.arguments?.getString("placeId"))
+                PlaceDetailScreen(placeId = entry.arguments?.getString("placeId"), navController)
             }
         }
     }

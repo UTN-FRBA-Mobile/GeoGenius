@@ -13,22 +13,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil3.compose.rememberAsyncImagePainter
 
 @Composable
-fun PlaceDetailScreen(placeId: String?) {
+fun PlaceDetailScreen(placeId: String?, navController: NavHostController) {
     val place = samplePlace
 
     Column(
@@ -43,6 +48,12 @@ fun PlaceDetailScreen(placeId: String?) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Volver"
+                )
+            }
             Text(
                 text = place.name,
                 fontSize = 30.sp,
@@ -89,7 +100,8 @@ fun PlaceDetailScreen(placeId: String?) {
 @Preview(showBackground = true)
 @Composable
 fun PlaceDetailScreenPreview() {
+    val navController = NavHostController(LocalContext.current)
     MaterialTheme {
-        PlaceDetailScreen("placeId")
+        PlaceDetailScreen("placeId", navController)
     }
 }
