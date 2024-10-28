@@ -18,15 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsButton() {
+fun SettingsButton(modifier: Modifier) {
     Image(
         Icons.Default.Settings,
         contentDescription = "Settings button",
         contentScale = ContentScale.Crop,
         colorFilter = ColorFilter.tint(Color.White),
-        modifier = Modifier.clickable {
-            // This should navigate to settings
-        }
+        modifier = modifier
+            .clickable {  }
             .size(64.dp)
             .clip(CircleShape)
             .aspectRatio(1f)
@@ -37,5 +36,5 @@ fun SettingsButton() {
 @Preview
 @Composable
 fun SettingsButtonPreview() {
-    SettingsButton()
+    SettingsButton(modifier = Modifier)
 }
