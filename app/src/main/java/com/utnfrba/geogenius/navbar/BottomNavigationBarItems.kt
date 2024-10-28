@@ -13,6 +13,11 @@ sealed class Screen(val route: String) {
     data object Filter : Screen("filter_route")
     data object Map : Screen("map_route")
     data object Bookmark : Screen("bookmark_route")
+    data class PlaceDetail(val placeId: String) : Screen("placeDetail/$placeId") {
+        companion object {
+            const val routeWithArgument = "placeDetail/{placeId}"
+        }
+    }
 }
 
 data class BottomNavigationBarItem(

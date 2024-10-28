@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.rememberAsyncImagePainter
 
 @Composable
-fun PlaceDetailScreen() {
+fun PlaceDetailScreen(placeId: String?) {
     val place = samplePlace
 
     Column(
@@ -90,6 +90,6 @@ fun PlaceDetailScreen() {
 @Composable
 fun PlaceDetailScreenPreview() {
     MaterialTheme {
-        PlaceDetailScreen()
+        PlaceDetailScreen("placeId")
     }
 }
