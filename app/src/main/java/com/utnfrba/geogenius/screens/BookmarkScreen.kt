@@ -20,7 +20,7 @@ fun BookmarkScreen(places: List<PlaceModel>, navController: NavHostController) {
                 place,
                 modifier = Modifier,
                 onClick = {
-                    navController.navigate(Screen.PlaceDetail(place.id).route)
+                    navController.navigate(Screen.PlaceDetail.withArgs(place.id))
                 }
             )
         }

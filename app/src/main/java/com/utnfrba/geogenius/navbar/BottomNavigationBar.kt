@@ -75,11 +75,10 @@ fun BottomNavigationBar() {
             }
 
             composable(
-                route = Screen.PlaceDetail.routeWithArgument,
+                route = Screen.PlaceDetail.route + "/{placeId}",
                 arguments = listOf(navArgument("placeId") { type = NavType.StringType })
             ) { entry ->
-                val placeId = entry.arguments?.getString("placeId")
-                PlaceDetailScreen(placeId = placeId)
+                PlaceDetailScreen(placeId = entry.arguments?.getString("placeId"))
             }
         }
     }
