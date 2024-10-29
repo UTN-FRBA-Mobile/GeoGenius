@@ -13,12 +13,20 @@ sealed class Screen(val route: String) {
     data object Filter : Screen("filter_route")
     data object Map : Screen("map_route")
     data object Bookmark : Screen("bookmark_route")
+    data object PlaceDetail : Screen("place_detail")
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg -> append("/$arg") }
+        }
+    }
 }
 
 data class BottomNavigationBarItem(
-    val label : String = "",
-    val filledIcon : ImageVector = Icons.Default.Home,
-    val outlinedIcon : ImageVector = Icons.Default.Home,
+    val label: String = "",
+    val filledIcon: ImageVector = Icons.Default.Home,
+    val outlinedIcon: ImageVector = Icons.Default.Home,
     val route: Screen = Screen.Filter
 ) {
     @Composable
