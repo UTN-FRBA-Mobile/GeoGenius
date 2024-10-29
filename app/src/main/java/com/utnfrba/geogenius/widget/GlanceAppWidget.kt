@@ -8,17 +8,24 @@ import androidx.compose.ui.unit.dp
 import androidx.glance.Button
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.GlanceTheme
+import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.components.Scaffold
+import androidx.glance.appwidget.components.TitleBar
 import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.text.Text
+import com.utnfrba.geogenius.R
 
 class GlanceAppWidget: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = GeoGeniusWidget()
@@ -38,27 +45,31 @@ class GeoGeniusWidget : GlanceAppWidget() {
 
     @Composable
     private fun Content(modifier: GlanceModifier = GlanceModifier) {
-        Column(
+        Scaffold (
             modifier = modifier,
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            backgroundColor = GlanceTheme.colors.widgetBackground,
+            titleBar = {
+                TitleBar(
+                    startIcon = ImageProvider(R.drawable.baseline_bookmark_24),
+                    title = "Mis bookmarks",
+                    textColor = GlanceTheme.colors.onSurface,
+                )
+            }
         ) {
-            Text(text = "Tus bookmarks", modifier = GlanceModifier.padding(12.dp))
-            Box(modifier) {
-                CardRow()
-            }
-            Box(modifier){
-                CardRow()
-            }
-
-
+          Column(modifier = GlanceModifier.padding(5.dp)) {
+              CardRow()
+              Spacer(modifier = GlanceModifier.height(5.dp))
+              CardRow()
+          }
         }
     }
 }
 
 @Composable
 private fun CardRow(modifier: GlanceModifier = GlanceModifier){
-    Row(modifier.padding(5.dp)) {
-        Button("Cabildo", onClick = {}, modifier)
-    }
+    Button(
+        text = "Cabildo",
+        onClick = {},
+        modifier.fillMaxWidth().padding(5.dp),
+    )
 }
