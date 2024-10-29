@@ -60,14 +60,16 @@ fun FilterScreen() {
                 )
             }
         }
-        val marsViewModel: MarsViewModel = viewModel()
-        when (val now = marsViewModel.marsUiState) {
-            is MarsUiState.Loading -> Text("Loading")
-            is MarsUiState.Success -> Text(
-                "Photos length: " + now.photos.length.toString()
-            )
-            is MarsUiState.Error -> Text("Error")
-        }
+
+    val bookmarkViewModel: BookmarkViewModel = viewModel()
+    when (val now = bookmarkViewModel.bookmarkUiState) {
+        is BookmarkUiState.Loading -> Text("Loading")
+        is BookmarkUiState.Success -> Text(
+            "Titulo: " + now.photos[0].name
+        )
+        is BookmarkUiState.Error -> Text("Error")
+    }
+
 }
 
 @Composable

@@ -5,45 +5,36 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.utnfrba.geogenius.network.MarsApi
+import com.utnfrba.geogenius.model.BookmarkDTO
+import com.utnfrba.geogenius.network.BookmarkApi
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-sealed interface MarsUiState {
-    data class Success(val photos: String) : MarsUiState
-    data object Error : MarsUiState
-    data object Loading : MarsUiState
+sealed interface BookmarkUiState {
+    data class Success(val photos: List<BookmarkDTO>) : BookmarkUiState
+    data object Error : BookmarkUiState
+    data object Loading : BookmarkUiState
 }
 
-class MarsViewModel : ViewModel() {
-    /** The mutable State that stores the status of the most recent request */
-    var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
+class BookmarkViewModel : ViewModel() {
+    var bookmarkUiState: BookmarkUiState by mutableStateOf(BookmarkUiState.Loading)
         private set
 
-    /**
-     * Call getMarsPhotos() on init so we can display status immediately.
-     */
     init {
-        getMarsPhotos()
+        getBookmarks()
     }
 
-    /**
-     * Gets Mars photos information from the Mars API Retrofit service and updates the
-     * [MarsPhoto] [List] [MutableList].
-     */
-    private fun getMarsPhotos() {
+    fun getBookmarks() {
         viewModelScope.launch {
-            marsUiState = MarsUiState.Loading
-            marsUiState = try {
-                val listResult = MarsApi.retrofitService.getPhotos()
-                MarsUiState.Success(
-                    "Success: ${listResult.size} Mars photos retrieved"
-                )
+            bookmarkUiState = BookmarkUiState.Loading
+            bookmarkUiState = try {
+                val listResult = BookmarkApi.retrofitService.getBookmarks()
+                BookmarkUiState.Success(listResult)
             } catch (e: IOException) {
-                MarsUiState.Error
+                BookmarkUiState.Error
             } catch (e: HttpException) {
-                MarsUiState.Error
+                BookmarkUiState.Error
             }
         }
     }
