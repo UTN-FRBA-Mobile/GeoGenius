@@ -3,26 +3,30 @@ package com.utnfrba.geogenius.widget
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.ImageProvider
 import androidx.glance.appwidget.components.FilledButton
 import androidx.glance.appwidget.components.Scaffold
 import androidx.glance.appwidget.components.TitleBar
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Column
+import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
-import androidx.glance.preview.ExperimentalGlancePreviewApi
 import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.model.BookmarkDTO
-import com.utnfrba.geogenius.model.Coordinates
+import com.utnfrba.geogenius.model.Coordinate
 import kotlin.math.roundToInt
 
 class GlanceAppWidget: GlanceAppWidgetReceiver() {
@@ -63,10 +67,10 @@ class GeoGeniusWidget : GlanceAppWidget() {
                   address = "123 Coffee Lane, Brewtown, CA",
                   rating = 4.5,
                   images = listOf(
-                      "https://example.com/images/cozy_cafe_1.jpg",
+                      "https://d2jv9003bew7ag.cloudfront.net/uploads/hands-new-your-harbor.jpg",
                       "https://example.com/images/cozy_cafe_2.jpg"
                   ),
-                  coordinates = Coordinates(x = 34.0522, y = -118.2437),
+                  coordinate = Coordinate(x = 34.0522, y = -118.2437),
                   type = "Café"
               )
               )
@@ -78,8 +82,15 @@ class GeoGeniusWidget : GlanceAppWidget() {
 
 @Composable
 private fun CardRow(modifier: GlanceModifier = GlanceModifier, bookmark: BookmarkDTO){
-    val arrowDirection = R.drawable.baseline_arrow_back_24
     val kms = (Math.random()*200).roundToInt()
+    val currentDirection = Coordinate(x = -34.0, y = -53.0) // TODO get from phone
+    val arrowDirection = getDirectionToReach(bookmark.coordinate, currentDirection).icon
+     Image(
+           modifier = GlanceModifier.cornerRadius(16.dp),
+           provider = ImageProvider(bookmark.images[0].toUri()),
+           contentScale = ContentScale.Crop,
+           contentDescription = bookmark.name,
+       )
     Row {
         FilledButton(
             text = kms.toString() + " km " + bookmark.name,
