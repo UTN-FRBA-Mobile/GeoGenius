@@ -44,7 +44,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                         address = "Foo 123",
                         rating = 4.3,
                         images = listOf(),
-                        coordinate = Coordinate(-34.0923, -53.43556),
+                        coordinates = Coordinate(-34.0923, -53.43556),
                         type = "cafe",
                     ),
                     BookmarkDTO(
@@ -55,7 +55,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                         address = "Foo 123",
                         rating = 4.3,
                         images = listOf(),
-                        coordinate = Coordinate(-34.0923, -53.43556),
+                        coordinates = Coordinate(-34.0923, -53.43556),
                         type = "cafe",
                     )
                 )
@@ -90,7 +90,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
 private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModifier) {
     val kms = (Math.random() * 200).roundToInt()
     val currentDirection = Coordinate(x = -34.0, y = -53.0) // TODO get from phone
-    val arrowDirection = getDirectionToReach(bookmark.coordinate, currentDirection).icon
+    val arrowDirection = getDirectionToReach(bookmark.coordinates, currentDirection).icon
     FilledButton(
         text = kms.toString() + " km " + bookmark.name,
         onClick = {},

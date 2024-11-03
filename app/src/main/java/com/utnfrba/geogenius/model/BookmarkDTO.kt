@@ -13,7 +13,7 @@ data class BookmarkDTO(
     val address: String,
     val rating: Double,
     val images: List<String>,
-    val coordinate: Coordinate,
+    val coordinates: Coordinate,
     val type: String
 )
 
