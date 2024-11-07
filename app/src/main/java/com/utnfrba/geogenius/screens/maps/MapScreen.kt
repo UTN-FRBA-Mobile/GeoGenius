@@ -1,15 +1,14 @@
 package com.utnfrba.geogenius.screens.maps
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.utnfrba.geogenius.screens.settings.SettingsButton
@@ -28,9 +28,30 @@ import com.utnfrba.geogenius.screens.settings.SettingsButton
 fun MapScreen() {
     val context = LocalContext.current
     val mapView = rememberMapViewWithLifecycle(context)
-
     val fusedLocationClient: FusedLocationProviderClient = remember {
         LocationServices.getFusedLocationProviderClient(context)
+    }
+
+    var hasLocationPermission by remember {
+        mutableStateOf(
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        hasLocationPermission = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true &&
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+    }
+
+    if (!hasLocationPermission) {
+        LaunchedEffect(Unit) {
+            locationPermissionLauncher.launch(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+            )
+        }
     }
 
     BoxWithConstraints {
@@ -38,31 +59,19 @@ fun MapScreen() {
         val topHeight: Dp = maxHeight * 1 / 10
 
         AndroidView({ mapView }) {
-            mapView.getMapAsync { googleMap ->
-                if (ActivityCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // Solicitar permisos si no están otorgados
-                    requestLocationPermissions(context)
-                    return@getMapAsync
-                }
-
-                // Obtener la ubicación actual
-                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                    if (location != null) {
-                        val userLocation = LatLng(location.latitude, location.longitude)
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
-                        googleMap.isMyLocationEnabled = true
-                    } else {
-                        Log.e("MapScreen", "No se pudo obtener la ubicación actual. Asegúrate de que la ubicación está activada en el dispositivo.")
+            mapView.getMapAsync { googleMap: GoogleMap ->
+                if (hasLocationPermission) {
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                        if (location != null) {
+                            val userLocation = LatLng(location.latitude, location.longitude)
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                            googleMap.isMyLocationEnabled = true
+                        } else {
+                            Log.e("MapScreen", "No se pudo obtener la ubicación actual. Asegurate de que la ubicación está activada en el dispositivo.")
+                        }
+                    }.addOnFailureListener {
+                        Log.e("MapScreen", "Error al intentar obtener la ubicación: ${it.message}")
                     }
-                }.addOnFailureListener {
-                    Log.e("MapScreen", "Error al intentar obtener la ubicación: ${it.message}")
                 }
             }
         }
@@ -74,20 +83,6 @@ fun MapScreen() {
                     .padding(15.dp)
             )
         }
-    }
-}
-
-
-private const val REQUEST_LOCATION_PERMISSION = 1
-private fun requestLocationPermissions(context: Context) {
-    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-        ActivityCompat.requestPermissions(
-            (context as Activity),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_LOCATION_PERMISSION
-        )
     }
 }
 
