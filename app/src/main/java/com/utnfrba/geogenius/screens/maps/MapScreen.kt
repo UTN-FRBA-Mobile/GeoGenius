@@ -29,7 +29,6 @@ fun MapScreen() {
     val context = LocalContext.current
     val mapView = rememberMapViewWithLifecycle(context)
 
-    // Recordar el cliente de ubicación
     val fusedLocationClient: FusedLocationProviderClient = remember {
         LocationServices.getFusedLocationProviderClient(context)
     }
@@ -49,6 +48,7 @@ fun MapScreen() {
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     // Solicitar permisos si no están otorgados
+                    requestLocationPermissions(context)
                     return@getMapAsync
                 }
 
@@ -56,13 +56,14 @@ fun MapScreen() {
                 fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                     if (location != null) {
                         val userLocation = LatLng(location.latitude, location.longitude)
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12f))
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
                         googleMap.isMyLocationEnabled = true
                     } else {
-                        Log.e("MapScreen", "No se pudo obtener la ubicación actual.")
+                        Log.e("MapScreen", "No se pudo obtener la ubicación actual. Asegúrate de que la ubicación está activada en el dispositivo.")
                     }
+                }.addOnFailureListener {
+                    Log.e("MapScreen", "Error al intentar obtener la ubicación: ${it.message}")
                 }
-
             }
         }
 
@@ -77,6 +78,18 @@ fun MapScreen() {
 }
 
 
+private const val REQUEST_LOCATION_PERMISSION = 1
+private fun requestLocationPermissions(context: Context) {
+    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        ActivityCompat.requestPermissions(
+            (context as Activity),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            REQUEST_LOCATION_PERMISSION
+        )
+    }
+}
 
 @Composable
 fun rememberMapViewWithLifecycle(context: Context): MapView {
@@ -93,17 +106,4 @@ fun rememberMapViewWithLifecycle(context: Context): MapView {
         }
     }
     return mapView
-}
-
-private const val REQUEST_LOCATION_PERMISSION = 1
-private fun requestLocationPermissions(context: Context) {
-    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-        ActivityCompat.requestPermissions(
-            (context as Activity),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_LOCATION_PERMISSION
-        )
-    }
 }
