@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,8 +28,7 @@ import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 @Composable
-fun BottomNavigationBar() {
-    val navController = rememberNavController()
+fun BottomNavigationBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(1) }
 
     Scaffold(
@@ -91,7 +91,8 @@ fun BottomNavigationBar() {
 @Preview
 @Composable
 fun BottomNavigationBarPreview() {
+    val navC = rememberNavController()
     GeoGeniusTheme(darkTheme = true) {
-        BottomNavigationBar()
+        BottomNavigationBar(navC)
     }
 }

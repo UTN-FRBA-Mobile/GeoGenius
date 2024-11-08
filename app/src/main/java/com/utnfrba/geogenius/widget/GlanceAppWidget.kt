@@ -27,6 +27,7 @@ import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
+import com.utnfrba.geogenius.navbar.Screen
 import kotlin.math.roundToInt
 
 
@@ -107,7 +108,7 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
             Intent(context.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                .setData("https://geogenius.utnfrba.com/bookmark_route/${bookmark.id}".toUri()),
+                .setData(("https://geogenius.utnfrba.com/" + Screen.Bookmark.toString()).toUri()),
         ),
         icon = ImageProvider(arrowDirection),
         modifier = modifier.padding(5.dp).fillMaxWidth(),
