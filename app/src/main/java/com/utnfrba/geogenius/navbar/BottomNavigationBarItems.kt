@@ -27,7 +27,7 @@ data class BottomNavigationBarItem(
     val label: String = "",
     val filledIcon: ImageVector = Icons.Default.Home,
     val outlinedIcon: ImageVector = Icons.Default.Home,
-    val route: Screen = Screen.Filter
+    val route: String = ""
 ) {
     @Composable
     fun getBottomNavigationItems(): List<BottomNavigationBarItem> {
@@ -36,19 +36,19 @@ data class BottomNavigationBarItem(
                 label = "Filters",
                 filledIcon = ImageVector.vectorResource(R.drawable.baseline_filter_alt_24),
                 outlinedIcon = ImageVector.vectorResource(R.drawable.outline_filter_alt_24),
-                route = Screen.Filter
+                route = Screen.Filter.route
             ),
             BottomNavigationBarItem(
                 label = "Map",
                 filledIcon = Icons.Filled.LocationOn,
                 outlinedIcon = Icons.Outlined.LocationOn,
-                route = Screen.Map
+                route = Screen.Map.route
             ),
             BottomNavigationBarItem(
                 label = "Bookmarks",
                 filledIcon = ImageVector.vectorResource(R.drawable.baseline_bookmark_24),
                 outlinedIcon = ImageVector.vectorResource(R.drawable.baseline_bookmark_border_24),
-                route = Screen.Bookmark
+                route = Screen.Bookmark.route
             ),
         )
     }

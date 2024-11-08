@@ -45,9 +45,8 @@ fun BottomNavigationBar(navController: NavHostController) {
                         selected = selectedItem == index,
                         onClick = {
                             selectedItem = index
-
-                            if (navController.currentDestination?.route != item.route.toString()) {
-                                navController.navigate(item.route.toString()) {
+                            if (navController.currentDestination?.route != item.route) {
+                                navController.navigate(item.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
@@ -61,19 +60,19 @@ fun BottomNavigationBar(navController: NavHostController) {
                 }
             }
         }
-    ) { paddingValues ->
+        ) { paddingValues ->
         NavHost(
             navController,
-            startDestination = Screen.Map.toString(),
+            startDestination = Screen.Map.route,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Screen.Filter.toString()) {
+            composable(Screen.Filter.route) {
                 FilterScreen()
             }
-            composable(Screen.Map.toString()) {
+            composable(Screen.Map.route) {
                 MapScreen()
             }
-            composable(Screen.Bookmark.toString()) {
+            composable(Screen.Bookmark.route) {
                 BookmarkScreen(listOf(samplePlace, samplePlace), navController)
             }
 

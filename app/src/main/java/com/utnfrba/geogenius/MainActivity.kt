@@ -10,10 +10,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.utnfrba.geogenius.navbar.BottomNavigationBar
 import com.utnfrba.geogenius.navbar.Screen
+import com.utnfrba.geogenius.screens.BookmarkScreen
+import com.utnfrba.geogenius.screens.FilterScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
+import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,15 +35,32 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
+            NavHost(navController, startDestination = Screen.Map.route) {
+                composable(Screen.Filter.route) {
+                    FilterScreen()
+                }
+                composable(Screen.Map.route) {
+                    MapScreen()
+                }
+                composable(Screen.Bookmark.route) {
+                    BookmarkScreen(listOf(samplePlace, samplePlace), navController)
+                }
+
+                composable(
+                    route = Screen.PlaceDetail.route + "/{placeId}",
+                    arguments = listOf(navArgument("placeId") { type = NavType.StringType })
+                ) { entry ->
+                    PlaceDetailScreen(placeId = entry.arguments?.getString("placeId"), navController)
+                }
+            }
             GeoGeniusTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
                     BottomNavigationBar(navController)
                 }
             }
             intent?.data?.let { uri ->
-                if (uri.toString().contains(Screen.Bookmark.toString())) {
-                    // Navigate to the Bookmark screen
-                    navController.navigate(Screen.Bookmark.toString())
+                if (uri.toString().contains(Screen.Bookmark.route)) {
+                    navController.navigate(Screen.Bookmark.route)
                 }
             }
         }
