@@ -59,8 +59,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
             intent?.data?.let { uri ->
-                if (uri.toString().contains(Screen.Bookmark.route)) {
-                    navController.navigate(Screen.Bookmark.route)
+                if (uri.toString().contains(Screen.PlaceDetail.route)) {
+                    val id = uri.getQueryParameter("id")
+                    println("ID IS " + id)
+                    navController.navigate(Screen.PlaceDetail.route + "/1")
                 }
             }
         }

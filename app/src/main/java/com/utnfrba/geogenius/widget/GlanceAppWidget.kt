@@ -46,7 +46,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
             Content(
                 arrayOf(
                     BookmarkDTO(
-                        id = "1",
+                        id = "0",
                         name = "Cafe lol",
                         description = "Gran cafe",
                         longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
@@ -57,7 +57,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                         type = "cafe",
                     ),
                     BookmarkDTO(
-                        id = "2",
+                        id = "1",
                         name = "Cafe lol",
                         description = "Gran cafe",
                         longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
@@ -108,7 +108,7 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
             Intent(context.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                .setData(("https://geogenius.utnfrba.com/" + Screen.Bookmark.route).toUri()),
+                .setData(("https://geogenius.utnfrba.com/" + Screen.PlaceDetail.route + "?id=" + bookmark.id).toUri()),
         ),
         icon = ImageProvider(arrowDirection),
         modifier = modifier.padding(5.dp).fillMaxWidth(),

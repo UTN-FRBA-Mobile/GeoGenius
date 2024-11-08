@@ -73,7 +73,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 MapScreen()
             }
             composable(Screen.Bookmark.route) {
-                BookmarkScreen(listOf(samplePlace, samplePlace), navController)
+                BookmarkScreen(listOf(samplePlace), navController)
             }
 
             composable(

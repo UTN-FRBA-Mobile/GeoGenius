@@ -39,9 +39,9 @@ fun getDirectionToReach(destination: Coordinate, origin: Coordinate): ArrowDirec
     val xDifference = destination.x - origin.x
     val yDifference = destination.y - origin.y
 
-    if (xDifference.absoluteValue > yDifference.absoluteValue) {
-        return if (yDifference > 0) ArrowDirection.UP else ArrowDirection.DOWN
+    return if (xDifference.absoluteValue > yDifference.absoluteValue) {
+        if (yDifference > 0) ArrowDirection.UP else ArrowDirection.DOWN
     } else {
-        return if (xDifference > 0) ArrowDirection.RIGHT else ArrowDirection.LEFT
+        if (xDifference > 0) ArrowDirection.RIGHT else ArrowDirection.LEFT
     }
 }
