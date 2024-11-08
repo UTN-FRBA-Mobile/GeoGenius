@@ -108,7 +108,7 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
             Intent(context.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                .setData(("https://geogenius.utnfrba.com/" + Screen.PlaceDetail.route + "?id=" + bookmark.id).toUri()),
+                .setData(("https://geogenius.utnfrba.com/" + Screen.PlaceDetail.route + "?placeId=" + bookmark.id).toUri()),
         ),
         icon = ImageProvider(arrowDirection),
         modifier = modifier.padding(5.dp).fillMaxWidth(),

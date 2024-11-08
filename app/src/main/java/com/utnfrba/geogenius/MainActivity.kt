@@ -23,6 +23,7 @@ import com.utnfrba.geogenius.screens.BookmarkScreen
 import com.utnfrba.geogenius.screens.FilterScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
+import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     MapScreen()
                 }
                 composable(Screen.Bookmark.route) {
-                    BookmarkScreen(listOf(samplePlace, samplePlace), navController)
+                    BookmarkScreen(listOf(samplePlace, samplePlace2), navController)
                 }
 
                 composable(
@@ -60,9 +61,9 @@ class MainActivity : ComponentActivity() {
             }
             intent?.data?.let { uri ->
                 if (uri.toString().contains(Screen.PlaceDetail.route)) {
-                    val id = uri.getQueryParameter("id")
-                    println("ID IS " + id)
-                    navController.navigate(Screen.PlaceDetail.route + "/1")
+                    val id = uri.getQueryParameter("placeId")
+                    // TODO: merge logic with navBar's controller and fix selected icon
+                    navController.navigate(Screen.PlaceDetail.route + "/" + id)
                 }
             }
         }

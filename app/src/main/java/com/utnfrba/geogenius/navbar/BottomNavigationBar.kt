@@ -24,6 +24,7 @@ import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
 import com.utnfrba.geogenius.screens.BookmarkScreen
 import com.utnfrba.geogenius.screens.FilterScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
@@ -73,7 +74,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 MapScreen()
             }
             composable(Screen.Bookmark.route) {
-                BookmarkScreen(listOf(samplePlace), navController)
+                BookmarkScreen(listOf(samplePlace, samplePlace2), navController)
             }
 
             composable(
