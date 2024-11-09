@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 fun SettingsMenu() {
     var widgetCount by remember { mutableFloatStateOf(1f) }
     Row(modifier = Modifier
-        .background(Color.White)
         .padding(20.dp)) {
         Column {
             Text("Elegir cantidad de items en widget")

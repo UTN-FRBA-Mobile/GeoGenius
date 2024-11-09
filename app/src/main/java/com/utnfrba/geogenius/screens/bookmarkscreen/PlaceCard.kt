@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.rememberAsyncImagePainter
+import coil3.compose.AsyncImage
 
 @Composable
 fun PlaceCard(
@@ -48,10 +47,8 @@ fun PlaceCard(
             modifier = Modifier.padding(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = model.images.firstOrNull() ?: "https://via.placeholder.com/150"
-                ),
+            AsyncImage(
+                model = "https://thrivethemes.com/wp-content/uploads/2018/05/photo-jpeg-example.jpg",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -108,4 +105,15 @@ fun PlaceCardPreview() {
         modifier = Modifier,
         onClick = {}
     )
+}
+
+@Preview
+@Composable
+fun LoadingImageFromInternetCoil() {
+    // [START android_compose_images_load_internet_coil]
+    AsyncImage(
+        model = "https://example.com/image.jpg",
+        contentDescription = "Translated description of what the image contains"
+    )
+    // [END android_compose_images_load_internet_coil]
 }
