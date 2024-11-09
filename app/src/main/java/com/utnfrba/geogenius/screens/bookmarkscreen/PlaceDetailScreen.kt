@@ -34,7 +34,7 @@ import coil3.compose.rememberAsyncImagePainter
 
 @Composable
 fun PlaceDetailScreen(placeId: String?, navController: NavHostController) {
-    val place = samplePlace
+    val place = sampleList.filter { p -> p.id == placeId }[0]
 
     Column(
         modifier = Modifier

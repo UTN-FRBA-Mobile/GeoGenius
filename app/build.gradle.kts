@@ -74,6 +74,7 @@ dependencies {
     // For interop APIs with Material
     implementation(libs.androidx.glance.material3)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.glance.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

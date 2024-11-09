@@ -13,12 +13,12 @@ data class BookmarkDTO(
     val address: String,
     val rating: Double,
     val images: List<String>,
-    val coordinates: Coordinates,
+    val coordinates: Coordinate,
     val type: String
 )
 
 @Serializable
-data class Coordinates(
+data class Coordinate(
     val x: Double,
     val y: Double
 )

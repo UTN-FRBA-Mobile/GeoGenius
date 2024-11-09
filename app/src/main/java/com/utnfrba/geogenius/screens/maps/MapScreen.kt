@@ -76,13 +76,13 @@ fun MapScreen() {
             }
         }
 
-        Column(modifier = Modifier.align(Alignment.TopEnd)) {
-            SettingsButton(
-                modifier = Modifier
-                    .height(topHeight)
-                    .padding(15.dp)
-            )
-        }
+//        Column(modifier = Modifier.align(Alignment.TopEnd)) {
+//            SettingsButton(
+//                modifier = Modifier
+//                    .height(topHeight)
+//                    .padding(15.dp)
+//            )
+//        }
     }
 }
 

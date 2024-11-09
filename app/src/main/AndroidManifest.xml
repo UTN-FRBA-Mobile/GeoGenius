@@ -29,6 +29,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -46,6 +47,8 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
+                android:targetCellWidth="2"
+                android:targetCellHeight="2"
                 android:resource="@xml/my_app_widget_info" />
         </receiver>
     </application>

@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.navbar.Screen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceCard
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceModel
-import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
+import com.utnfrba.geogenius.screens.bookmarkscreen.sampleList
 
 @Composable
 fun BookmarkScreen(places: List<PlaceModel>, navController: NavHostController) {
@@ -31,5 +31,5 @@ fun BookmarkScreen(places: List<PlaceModel>, navController: NavHostController) {
 @Composable
 fun SavedScreenPreview() {
     val navController = NavHostController(LocalContext.current)
-    BookmarkScreen(listOf(samplePlace, samplePlace), navController)
+    BookmarkScreen(sampleList, navController)
 }

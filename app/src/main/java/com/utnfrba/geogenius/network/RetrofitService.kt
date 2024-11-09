@@ -16,7 +16,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface BookmarkApiService {
-    @GET("v3/e8d59cea-ab3d-4c3e-adbd-7ca61e0dc9b9")
+    @GET("/v3/16900848-8010-4fb0-8989-1afa18739b7b")
     suspend fun getBookmarks(): List<BookmarkDTO>
 }
 

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.utnfrba.geogenius.R
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.utnfrba.geogenius.screens.settings.SettingsMenu
 
 @Composable
 fun FilterScreen() {
@@ -58,17 +59,21 @@ fun FilterScreen() {
                     onCheckedChange = { parqueChecked = it },
                     label = "Parques"
                 )
+
+                SettingsMenu()
             }
         }
 
-    val bookmarkViewModel: BookmarkViewModel = viewModel()
-    when (val now = bookmarkViewModel.bookmarkUiState) {
-        is BookmarkUiState.Loading -> Text("Loading")
-        is BookmarkUiState.Success -> Text(
-            "Titulo: " + now.photos[0].name
-        )
-        is BookmarkUiState.Error -> Text("Error")
-    }
+
+    // Network request
+//    val bookmarkViewModel: BookmarkViewModel = viewModel()
+//    when (val now = bookmarkViewModel.bookmarkUiState) {
+//        is BookmarkUiState.Loading -> Text("Loading")
+//        is BookmarkUiState.Success -> Text(
+//            "Titulo: " + now.photos[0].name
+//        )
+//        is BookmarkUiState.Error -> Text("Error")
+//    }
 
 }
 
