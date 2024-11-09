@@ -122,7 +122,7 @@ fun PreviewWidget() {
         arrayOf(
             BookmarkDTO(
                 id = "1",
-                name = "Cafe lol",
+                name = "Casa simpson",
                 description = "Gran cafe",
                 longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
                 address = "Foo 123",
@@ -133,7 +133,7 @@ fun PreviewWidget() {
             ),
             BookmarkDTO(
                 id = "2",
-                name = "Cafe lol",
+                name = "Casa lol",
                 description = "Gran cafe",
                 longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
                 address = "Foo 123",

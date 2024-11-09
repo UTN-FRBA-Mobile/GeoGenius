@@ -7,10 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -51,7 +49,10 @@ class MainActivity : ComponentActivity() {
                     route = Screen.PlaceDetail.route + "/{placeId}",
                     arguments = listOf(navArgument("placeId") { type = NavType.StringType })
                 ) { entry ->
-                    PlaceDetailScreen(placeId = entry.arguments?.getString("placeId"), navController)
+                    PlaceDetailScreen(
+                        placeId = entry.arguments?.getString("placeId"),
+                        navController
+                    )
                 }
             }
             GeoGeniusTheme {
@@ -63,7 +64,13 @@ class MainActivity : ComponentActivity() {
                 if (uri.toString().contains(Screen.PlaceDetail.route)) {
                     val id = uri.getQueryParameter("placeId")
                     // TODO: merge logic with navBar's controller and fix selected icon
-                    navController.navigate(Screen.PlaceDetail.route + "/" + id)
+                    navController.navigate(Screen.PlaceDetail.route + "/" + id) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = false
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             }
         }

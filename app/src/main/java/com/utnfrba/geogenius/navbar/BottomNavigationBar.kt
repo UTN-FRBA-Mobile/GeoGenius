@@ -18,12 +18,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
 import com.utnfrba.geogenius.screens.BookmarkScreen
 import com.utnfrba.geogenius.screens.FilterScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
@@ -34,34 +35,37 @@ fun BottomNavigationBar(navController: NavHostController) {
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                BottomNavigationBarItem().getBottomNavigationItems().forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        icon = {
-                            Icon(
-                                if (selectedItem == index) item.filledIcon else item.outlinedIcon,
-                                contentDescription = item.label
-                            )
-                        },
-                        selected = selectedItem == index,
-                        onClick = {
-                            selectedItem = index
-                            if (navController.currentDestination?.route != item.route) {
-                                navController.navigate(item.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+            if (currentRoute(navController) != Screen.PlaceDetail.route) {
+                NavigationBar {
+                    BottomNavigationBarItem().getBottomNavigationItems()
+                        .forEachIndexed { index, item ->
+                            NavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        if (selectedItem == index) item.filledIcon else item.outlinedIcon,
+                                        contentDescription = item.label
+                                    )
+                                },
+                                selected = selectedItem == index,
+                                onClick = {
+                                    selectedItem = index
+                                    if (navController.currentDestination?.route != item.route) {
+                                        navController.navigate(item.route) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = false
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        label = { Text(item.label) }
-                    )
+                                },
+                                label = { Text(item.label) }
+                            )
+                        }
                 }
             }
         }
-        ) { paddingValues ->
+    ) { paddingValues ->
         NavHost(
             navController,
             startDestination = Screen.Map.route,
@@ -82,10 +86,17 @@ fun BottomNavigationBar(navController: NavHostController) {
                 arguments = listOf(navArgument("placeId") { type = NavType.StringType })
             ) { entry ->
                 PlaceDetailScreen(placeId = entry.arguments?.getString("placeId"), navController)
+//                selectedItem = 2
             }
         }
     }
 
+}
+
+@Composable
+fun currentRoute(navController: NavHostController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.arguments?.getString(Screen.PlaceDetail.route)
 }
 
 @Preview
