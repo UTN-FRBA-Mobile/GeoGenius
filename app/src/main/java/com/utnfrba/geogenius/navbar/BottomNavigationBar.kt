@@ -22,7 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.utnfrba.geogenius.screens.BookmarkScreen
-import com.utnfrba.geogenius.screens.FilterScreen
+import com.utnfrba.geogenius.screens.filters.FilterScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2

@@ -18,7 +18,7 @@ import androidx.navigation.navArgument
 import com.utnfrba.geogenius.navbar.BottomNavigationBar
 import com.utnfrba.geogenius.navbar.Screen
 import com.utnfrba.geogenius.screens.BookmarkScreen
-import com.utnfrba.geogenius.screens.FilterScreen
+import com.utnfrba.geogenius.screens.filters.FilterScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2

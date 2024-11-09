@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,7 +22,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import com.utnfrba.geogenius.screens.settings.SettingsButton
 
 @Composable
 fun MapScreen() {
@@ -76,13 +75,12 @@ fun MapScreen() {
             }
         }
 
-//        Column(modifier = Modifier.align(Alignment.TopEnd)) {
-//            SettingsButton(
-//                modifier = Modifier
-//                    .height(topHeight)
-//                    .padding(15.dp)
-//            )
-//        }
+        Column {
+            SearchBar(
+                modifier = Modifier
+                    .height(topHeight)
+            )
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.utnfrba.geogenius.screens
+package com.utnfrba.geogenius.screens.filters
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,27 +11,17 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Icon
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
-import com.utnfrba.geogenius.R
 
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.utnfrba.geogenius.screens.settings.SettingsMenu
 
 @Composable
 fun FilterScreen() {
 
     var cafeChecked by remember { mutableStateOf(false) }
-    var museoChecked by remember { mutableStateOf(false) }
-    var parqueChecked by remember { mutableStateOf(false) }
+    var museumChecked by remember { mutableStateOf(false) }
+    var parkChecked by remember { mutableStateOf(false) }
 
 
         Card(
@@ -49,14 +39,14 @@ fun FilterScreen() {
                 )
 
                 CheckboxWithLabel(
-                    checked = museoChecked,
-                    onCheckedChange = { museoChecked = it },
+                    checked = museumChecked,
+                    onCheckedChange = { museumChecked = it },
                     label = "Museos"
                 )
 
                 CheckboxWithLabel(
-                    checked = parqueChecked,
-                    onCheckedChange = { parqueChecked = it },
+                    checked = parkChecked,
+                    onCheckedChange = { parkChecked = it },
                     label = "Parques"
                 )
 
@@ -94,53 +84,6 @@ fun CheckboxWithLabel(checked: Boolean, onCheckedChange: (Boolean) -> Unit, labe
             modifier = Modifier.padding(start = 8.dp)
         )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchBar() {
-    var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            placeholder = { Text("Search") },
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .height(56.dp),
-            textStyle = TextStyle(fontSize = 18.sp),
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_search),
-                    contentDescription = "Search Icon"
-                )
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                disabledTextColor = Color.Gray,
-                errorTextColor = Color.Red,
-                containerColor = Color.Transparent,
-                cursorColor = Color.Black,
-                focusedBorderColor = Color.Gray,
-                unfocusedBorderColor = Color.LightGray,
-                focusedPlaceholderColor = Color.Gray,
-                unfocusedPlaceholderColor = Color.Gray
-            )
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SearchBarPreview() {
-    SearchBar()
 }
 
 @Preview(showBackground = true)
