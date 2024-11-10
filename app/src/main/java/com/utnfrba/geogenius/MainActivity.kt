@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     // TODO: merge logic with navBar's controller and fix selected icon
                     navController.navigate(Screen.PlaceDetail.route + "/" + id) {
                         popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = false
+                            saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true

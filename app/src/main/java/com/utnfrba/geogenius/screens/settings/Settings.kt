@@ -13,19 +13,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.utnfrba.geogenius.widget.WidgetSettings
 
 @Composable
 fun SettingsMenu() {
-    var widgetCount by remember { mutableFloatStateOf(1f) }
+    var widgetCount by remember { mutableFloatStateOf(WidgetSettings.getBookmarkAmount().toFloat()) }
     Row(
         modifier = Modifier
             .padding(20.dp)
     ) {
         Column {
-            Text("Elegir cantidad de items en widget")
+            Text("Cantidad de bookmarks en widget")
             Slider(
                 value = widgetCount,
-                onValueChange = { widgetCount = it },
+                onValueChange = {
+                    widgetCount = it
+                    WidgetSettings.setBookmarkAmount(it.toInt())
+                },
                 modifier = Modifier.padding(10.dp),
                 valueRange = 1f..4f,
                 steps = 2
