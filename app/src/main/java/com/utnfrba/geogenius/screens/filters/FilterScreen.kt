@@ -21,9 +21,9 @@ import com.utnfrba.geogenius.screens.settings.SettingsMenu
 @Composable
 fun FilterScreen() {
 
-    var cafeChecked by remember { mutableStateOf(false) }
-    var museumChecked by remember { mutableStateOf(false) }
-    var parkChecked by remember { mutableStateOf(false) }
+    var cafeChecked by remember { mutableStateOf(FilterSettings.getCafeChecked()) }
+    var museumChecked by remember { mutableStateOf(FilterSettings.getMuseumChecked()) }
+    var parkChecked by remember { mutableStateOf(FilterSettings.getParkChecked()) }
 
 
     Card(
@@ -36,19 +36,28 @@ fun FilterScreen() {
         ) {
             CheckboxWithLabel(
                 checked = cafeChecked,
-                onCheckedChange = { cafeChecked = it },
+                onCheckedChange = {
+                    cafeChecked = it
+                    FilterSettings.setCafeChecked(it)
+                },
                 label = "Cafés"
             )
 
             CheckboxWithLabel(
                 checked = museumChecked,
-                onCheckedChange = { museumChecked = it },
+                onCheckedChange = {
+                    museumChecked = it
+                    FilterSettings.setMuseumChecked(it)
+                },
                 label = "Museos"
             )
 
             CheckboxWithLabel(
                 checked = parkChecked,
-                onCheckedChange = { parkChecked = it },
+                onCheckedChange = {
+                    parkChecked = it
+                    FilterSettings.setParkChecked(it)
+                },
                 label = "Parques"
             )
 
