@@ -12,16 +12,19 @@ import androidx.glance.GlanceTheme
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.components.FilledButton
 import androidx.glance.appwidget.components.Scaffold
 import androidx.glance.appwidget.components.TitleBar
 import androidx.glance.appwidget.provideContent
+import androidx.glance.appwidget.updateAll
 import androidx.glance.layout.Column
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.model.BookmarkDTO
@@ -70,10 +73,13 @@ class GeoGeniusWidget : GlanceAppWidget() {
                 )
             )
         }
+
+
     }
 
     @Composable
     fun Content(bookmarks: Array<BookmarkDTO>, modifier: GlanceModifier = GlanceModifier) {
+        val bookmarkViewModel: WidgetViewModel = viewModel()
         Scaffold(
             modifier = modifier,
             backgroundColor = GlanceTheme.colors.widgetBackground,
@@ -86,7 +92,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
             }
         ) {
             Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.slice(0..<min(WidgetSettings.getBookmarkAmount(), bookmarks.size)).forEach { b ->
+                bookmarks.slice(0..<min(bookmarkViewModel.getBookmarkCount(), bookmarks.size)).forEach { b ->
                     CardRow(b)
                     Spacer(modifier = GlanceModifier.padding(5.dp))
                 }

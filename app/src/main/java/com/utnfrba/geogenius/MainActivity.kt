@@ -56,9 +56,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
             GeoGeniusTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
+//                Scaffold(modifier = Modifier.fillMaxSize()) {
                     BottomNavigationBar(navController)
-                }
+//                }
             }
             intent?.data?.let { uri ->
                 if (uri.toString().contains(Screen.PlaceDetail.route)) {

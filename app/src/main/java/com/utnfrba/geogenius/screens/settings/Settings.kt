@@ -13,11 +13,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.utnfrba.geogenius.widget.WidgetSettings
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.utnfrba.geogenius.widget.WidgetViewModel
 
 @Composable
 fun SettingsMenu() {
-    var widgetCount by remember { mutableFloatStateOf(WidgetSettings.getBookmarkAmount().toFloat()) }
+    val bookmarkViewModel: WidgetViewModel = viewModel()
+    var widgetCount by remember { mutableFloatStateOf(bookmarkViewModel.getBookmarkCount().toFloat()) }
     Row(
         modifier = Modifier
             .padding(20.dp)
@@ -28,7 +30,7 @@ fun SettingsMenu() {
                 value = widgetCount,
                 onValueChange = {
                     widgetCount = it
-                    WidgetSettings.setBookmarkAmount(it.toInt())
+                    bookmarkViewModel.setBookmarkCount(it.toInt())
                 },
                 modifier = Modifier.padding(10.dp),
                 valueRange = 1f..4f,
