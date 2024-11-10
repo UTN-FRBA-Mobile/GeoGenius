@@ -76,7 +76,7 @@ fun MapScreen() {
         }
 
         Column {
-            SearchBar(
+            SearchBarComponent(
                 modifier = Modifier
                     .height(topHeight)
             )
