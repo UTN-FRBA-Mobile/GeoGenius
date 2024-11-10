@@ -42,7 +42,7 @@ fun SearchBarComponent(modifier: Modifier = Modifier) {
             .padding(16.dp),
     ) {
         LazyColumn {
-            val filtered = countriesList.filter {  country ->
+            val filtered = countriesList.filter { country ->
                 if (searchQuery != "") {
                     country.uppercase().contains(searchQuery.trim().uppercase())
                 } else false

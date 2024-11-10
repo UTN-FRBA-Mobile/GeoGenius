@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.widget
 
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
@@ -104,7 +103,7 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
     FilledButton(
         text = kms.toString() + " km " + bookmark.name,
         // https://developer.android.com/codelabs/glance
-       onClick = actionStartActivity(
+        onClick = actionStartActivity(
             Intent(context.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

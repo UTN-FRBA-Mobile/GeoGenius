@@ -7,11 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -33,8 +36,14 @@ fun MapScreen() {
 
     var hasLocationPermission by remember {
         mutableStateOf(
-            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
         )
     }
 
@@ -48,7 +57,10 @@ fun MapScreen() {
     if (!hasLocationPermission) {
         LaunchedEffect(Unit) {
             locationPermissionLauncher.launch(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
             )
         }
     }
@@ -63,10 +75,18 @@ fun MapScreen() {
                     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                         if (location != null) {
                             val userLocation = LatLng(location.latitude, location.longitude)
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                            googleMap.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    userLocation,
+                                    15f
+                                )
+                            )
                             googleMap.isMyLocationEnabled = true
                         } else {
-                            Log.e("MapScreen", "No se pudo obtener la ubicación actual. Asegurate de que la ubicación está activada en el dispositivo.")
+                            Log.e(
+                                "MapScreen",
+                                "No se pudo obtener la ubicación actual. Asegurate de que la ubicación está activada en el dispositivo."
+                            )
                         }
                     }.addOnFailureListener {
                         Log.e("MapScreen", "Error al intentar obtener la ubicación: ${it.message}")
