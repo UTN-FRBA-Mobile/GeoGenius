@@ -75,12 +75,7 @@ fun MapScreen() {
             }
         }
 
-        Column {
-            SearchBarComponent(
-                modifier = Modifier
-                    .height(topHeight)
-            )
-        }
+        SearchBarComponent()
     }
 }
 
