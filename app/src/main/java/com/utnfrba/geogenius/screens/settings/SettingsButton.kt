@@ -25,12 +25,12 @@ fun SettingsButton(modifier: Modifier) {
         contentScale = ContentScale.Crop,
         colorFilter = ColorFilter.tint(Color.White),
         modifier = modifier
-            .clickable {  }
+            .clickable { }
             .size(64.dp)
             .clip(CircleShape)
             .aspectRatio(1f)
             .background(Color.Gray),
-        )
+    )
 }
 
 @Preview

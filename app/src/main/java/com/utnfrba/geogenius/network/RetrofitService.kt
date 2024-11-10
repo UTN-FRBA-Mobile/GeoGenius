@@ -21,7 +21,7 @@ interface BookmarkApiService {
 }
 
 object BookmarkApi {
-    val retrofitService : BookmarkApiService by lazy {
+    val retrofitService: BookmarkApiService by lazy {
         retrofit.create(BookmarkApiService::class.java)
     }
 }

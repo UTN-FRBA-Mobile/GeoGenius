@@ -22,10 +22,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.utnfrba.geogenius.screens.BookmarkScreen
-import com.utnfrba.geogenius.screens.FilterScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
 import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2
+import com.utnfrba.geogenius.screens.filters.FilterScreen
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
@@ -52,7 +52,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                                     if (navController.currentDestination?.route != item.route) {
                                         navController.navigate(item.route) {
                                             popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = false
+                                                saveState = true
                                             }
                                             launchSingleTop = true
                                             restoreState = true

@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.widget
 
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
@@ -28,6 +27,7 @@ import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 import com.utnfrba.geogenius.navbar.Screen
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -86,7 +86,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
             }
         ) {
             Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.forEach { b ->
+                bookmarks.slice(0..<min(WidgetSettings.getBookmarkAmount(), bookmarks.size)).forEach { b ->
                     CardRow(b)
                     Spacer(modifier = GlanceModifier.padding(5.dp))
                 }
@@ -103,8 +103,7 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
     val context = LocalContext.current
     FilledButton(
         text = kms.toString() + " km " + bookmark.name,
-        // https://developer.android.com/codelabs/glance
-       onClick = actionStartActivity(
+        onClick = actionStartActivity(
             Intent(context.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

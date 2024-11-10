@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.navbar.Screen
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceCard
@@ -20,7 +21,13 @@ fun BookmarkScreen(places: List<PlaceModel>, navController: NavHostController) {
                 place,
                 modifier = Modifier,
                 onClick = {
-                    navController.navigate(Screen.PlaceDetail.withArgs(place.id))
+                    navController.navigate(Screen.PlaceDetail.withArgs(place.id)){
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
