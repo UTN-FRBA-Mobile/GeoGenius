@@ -28,10 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.utnfrba.geogenius.model.BookmarkDTO
 
 @Composable
 fun PlaceCard(
-    model: PlaceModel,
+    model: BookmarkDTO,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
