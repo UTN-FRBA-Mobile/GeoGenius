@@ -1,20 +1,18 @@
 package com.utnfrba.geogenius.widget
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class WidgetViewModel: ViewModel() {
-    private var bookmarkCountState: Int by mutableIntStateOf(1)
-
-    fun getBookmarkCount(): Int {
-        return bookmarkCountState
-    }
+    private val _uiState = MutableStateFlow(1)
+    val uiState: StateFlow<Int> = _uiState.asStateFlow()
 
     fun setBookmarkCount(newCount: Int) {
-        bookmarkCountState = newCount
+        _uiState.update {
+            newCount
+        }
     }
 }

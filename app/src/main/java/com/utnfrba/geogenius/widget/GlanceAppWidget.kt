@@ -3,6 +3,8 @@ package com.utnfrba.geogenius.widget
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -79,7 +81,10 @@ class GeoGeniusWidget : GlanceAppWidget() {
 
     @Composable
     fun Content(bookmarks: Array<BookmarkDTO>, modifier: GlanceModifier = GlanceModifier) {
-        val bookmarkViewModel: WidgetViewModel = viewModel()
+//        val bookmarkViewModel: WidgetViewModel = viewModel()
+//        val value by bookmarkViewModel.uiState.collectAsState()
+        val value = 4
+        // TODO java.lang.IllegalStateException: CompositionLocal LocalView not present
         Scaffold(
             modifier = modifier,
             backgroundColor = GlanceTheme.colors.widgetBackground,
@@ -92,7 +97,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
             }
         ) {
             Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.slice(0..<min(bookmarkViewModel.getBookmarkCount(), bookmarks.size)).forEach { b ->
+                bookmarks.slice(0..<min(value, bookmarks.size)).forEach { b ->
                     CardRow(b)
                     Spacer(modifier = GlanceModifier.padding(5.dp))
                 }

@@ -19,7 +19,7 @@ import com.utnfrba.geogenius.widget.WidgetViewModel
 @Composable
 fun SettingsMenu() {
     val bookmarkViewModel: WidgetViewModel = viewModel()
-    var widgetCount by remember { mutableFloatStateOf(bookmarkViewModel.getBookmarkCount().toFloat()) }
+    var widgetCount by remember { mutableFloatStateOf(bookmarkViewModel.uiState.value.toFloat()) }
     Row(
         modifier = Modifier
             .padding(20.dp)
