@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
                     MapScreen()
                 }
                 composable(Screen.Bookmark.route) {
-                    BookmarkScreen(listOf(samplePlace, samplePlace2), navController)
+                    val bookmarkViewModel: BookmarkViewModel = viewModel()
+                    BookmarkScreen(bookmarkViewModel, navController)
                 }
 
                 composable(

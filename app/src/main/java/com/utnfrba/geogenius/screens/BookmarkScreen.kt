@@ -2,34 +2,49 @@ package com.utnfrba.geogenius.screens
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.navbar.Screen
+import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceCard
-import com.utnfrba.geogenius.screens.bookmarkscreen.sampleList
 
 @Composable
-fun BookmarkScreen(places: List<BookmarkDTO>, navController: NavHostController) {
-    LazyColumn {
-        items(places) { place ->
-            PlaceCard(
-                place,
-                modifier = Modifier,
-                onClick = {
-                    navController.navigate(Screen.PlaceDetail.withArgs(place.id)){
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
+    val places = bookmarkViewModel.bookmarks
+    val isLoading = bookmarkViewModel.isLoading
+    val errorMessage = bookmarkViewModel.errorMessage
+
+    if (isLoading) {
+        CircularProgressIndicator()
+    } else {
+        if (errorMessage != null) {
+            Text(text = "Error: $errorMessage", color = Color.Red)
+        } else {
+            LazyColumn {
+                items(places) { place ->
+                    PlaceCard(
+                        place,
+                        modifier = Modifier,
+                        onClick = {
+                            navController.navigate(Screen.PlaceDetail.withArgs(place.id)) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    )
                 }
-            )
+            }
         }
     }
 }
@@ -38,5 +53,6 @@ fun BookmarkScreen(places: List<BookmarkDTO>, navController: NavHostController) 
 @Composable
 fun SavedScreenPreview() {
     val navController = NavHostController(LocalContext.current)
-    BookmarkScreen(sampleList, navController)
+    val bookmarkViewModel: BookmarkViewModel = viewModel()
+    BookmarkScreen(bookmarkViewModel, navController)
 }

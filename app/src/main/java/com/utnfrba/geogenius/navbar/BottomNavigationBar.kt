@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,9 +23,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.utnfrba.geogenius.screens.BookmarkScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
-import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
-import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2
 import com.utnfrba.geogenius.screens.filters.FilterScreen
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
@@ -78,7 +78,8 @@ fun BottomNavigationBar(navController: NavHostController) {
                 MapScreen()
             }
             composable(Screen.Bookmark.route) {
-                BookmarkScreen(listOf(samplePlace, samplePlace2), navController)
+                val bookmarkViewModel: BookmarkViewModel = viewModel()
+                BookmarkScreen(bookmarkViewModel, navController)
             }
 
             composable(
