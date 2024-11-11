@@ -75,7 +75,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 FilterScreen()
             }
             composable(Screen.Map.route) {
-                MapScreen()
+                MapScreen(emptyList())
             }
             composable(Screen.Bookmark.route) {
                 BookmarkScreen(listOf(samplePlace, samplePlace2), navController)
