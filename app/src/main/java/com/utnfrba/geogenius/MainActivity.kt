@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     val id = uri.getQueryParameter("placeId")
                     // TODO: merge logic with navBar's controller and fix selected icon
                     navController.navigate(Screen.PlaceDetail.route + "/" + id) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
                         launchSingleTop = true
