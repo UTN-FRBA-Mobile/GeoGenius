@@ -11,7 +11,7 @@ private const val BASE_URL =
     "https://run.mocky.io"
 
 interface BookmarkApiService {
-    @GET("/v3/16900848-8010-4fb0-8989-1afa18739b7b")
+    @GET("/v3/2daeddf1-158c-4e88-b17b-4cee39702e47")
     suspend fun getBookmarks(): List<BookmarkDTO>
 }
 

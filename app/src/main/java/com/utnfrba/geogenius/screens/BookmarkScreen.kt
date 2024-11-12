@@ -13,15 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
-import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceCard
+import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkCard
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
-    val places = bookmarkViewModel.bookmarks
+    val bookmarks = bookmarkViewModel.bookmarks
     val isLoading = bookmarkViewModel.isLoading
     val errorMessage = bookmarkViewModel.errorMessage
 
@@ -32,25 +31,24 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
         ) {
             CircularProgressIndicator()
         }
+    } else if (errorMessage != null) {
+        Text(text = "Error: $errorMessage", color = Color.Red)
     } else {
-        if (errorMessage != null) {
-            Text(text = "Error: $errorMessage", color = Color.Red)
-        } else {
-            LazyColumn {
-                items(places) { place ->
-                    PlaceCard(
-                        place,
-                        modifier = Modifier,
-                        onClick = {
-                            navController.navigate(Screen.PlaceDetail.withArgs(place.id)) {
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+        LazyColumn {
+            items(bookmarks) { bookmark ->
+                BookmarkCard(
+                    bookmark,
+                    modifier = Modifier,
+                    onClick = {
+                        navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                    )
-                }
+                    }
+                )
             }
         }
+
     }
 }
 

@@ -29,21 +29,21 @@ object BookmarkRepository {
         return Result.success(cachedBookmarks ?: emptyList())
     }
 
-    suspend fun getFilteredBookmarksByRating(minRating: Double): Result<List<BookmarkDTO>> {
+    suspend fun getBookmarksByRating(minRating: Double): Result<List<BookmarkDTO>> {
         return getBookmarks().map { bookmarks ->
             bookmarks.filter { it.rating >= minRating }
         }
     }
 
-    suspend fun getFilteredBookmarksByType(type: String): Result<List<BookmarkDTO>> {
+    suspend fun getBookmarksByType(type: String): Result<List<BookmarkDTO>> {
         return getBookmarks().map { bookmarks ->
             bookmarks.filter { it.type.equals(type, ignoreCase = true) }
         }
     }
 
-    suspend fun getFilteredBookmarksByName(keyword: String): Result<List<BookmarkDTO>> {
+    suspend fun getBookmarksById(id: String): Result<BookmarkDTO> {
         return getBookmarks().map { bookmarks ->
-            bookmarks.filter { it.name.contains(keyword, ignoreCase = true) }
+            bookmarks.filter { it.id.equals(id, ignoreCase = true) }[0]
         }
     }
 }

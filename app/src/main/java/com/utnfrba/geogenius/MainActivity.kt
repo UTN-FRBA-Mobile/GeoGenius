@@ -35,9 +35,9 @@ class MainActivity : ComponentActivity() {
             }
 
             intent?.data?.let { uri ->
-                if (uri.toString().contains(Screen.PlaceDetail.route)) {
+                if (uri.toString().contains(Screen.BookmarkDetail.route)) {
                     val id = uri.getQueryParameter("placeId")
-                    navController.navigate("${Screen.PlaceDetail.route}/$id") { //revisar si sirve Screen.PlaceDetail.withArgs(id.toString())
+                    navController.navigate("${Screen.BookmarkDetail.route}/$id") { //revisar si sirve Screen.PlaceDetail.withArgs(id.toString())
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
                         restoreState = true

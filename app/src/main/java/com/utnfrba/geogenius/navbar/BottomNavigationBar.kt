@@ -19,7 +19,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(1) }
     val currentRoute = currentRoute(navController)
 
-    if (currentRoute != Screen.PlaceDetail.route) {
+    if (currentRoute != Screen.BookmarkDetail.route) {
         NavigationBar {
             BottomNavigationBarItem().getBottomNavigationItems().forEachIndexed { index, item ->
                 NavigationBarItem(

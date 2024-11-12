@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.utnfrba.geogenius.screens.BookmarkScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
-import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkDetailScreen
 import com.utnfrba.geogenius.screens.filters.FilterScreen
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,11 +33,11 @@ fun GeoGeniusNavGraph(
             BookmarkScreen(bookmarkViewModel, navController)
         }
         composable(
-            route = Screen.PlaceDetail.route + "/{placeId}",
+            route = Screen.BookmarkDetail.route + "/{placeId}",
             arguments = listOf(navArgument("placeId") { type = NavType.StringType })
         ) { entry ->
-            PlaceDetailScreen(
-                placeId = entry.arguments?.getString("placeId"),
+            BookmarkDetailScreen(
+                id = entry.arguments?.getString("placeId"),
                 navController = navController
             )
         }

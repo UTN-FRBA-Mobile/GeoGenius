@@ -31,7 +31,7 @@ import coil3.compose.AsyncImage
 import com.utnfrba.geogenius.model.BookmarkDTO
 
 @Composable
-fun PlaceCard(
+fun BookmarkCard(
     model: BookmarkDTO,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
@@ -101,7 +101,7 @@ fun PlaceCard(
 @Preview(showBackground = true)
 @Composable
 fun PlaceCardPreview() {
-    PlaceCard(
+    BookmarkCard(
         samplePlace,
         modifier = Modifier,
         onClick = {}
