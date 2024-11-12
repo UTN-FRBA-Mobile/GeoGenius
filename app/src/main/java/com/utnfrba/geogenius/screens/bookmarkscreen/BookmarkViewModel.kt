@@ -18,19 +18,16 @@ class BookmarkViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            try {
-                isLoading = true
-                val result = BookmarkRepository.getBookmarks()
-                if (result.isSuccess) {
-                    bookmarks = result.getOrNull() ?: emptyList()
-                } else {
-                    errorMessage = "Error loading bookmarks: ${result.exceptionOrNull()?.localizedMessage}"
-                }
-            } catch (e: Exception) {
-                errorMessage = "Unexpected error: ${e.localizedMessage}"
-            } finally {
-                isLoading = false
+            isLoading = true
+            val result = BookmarkRepository.getBookmarks()
+            if (result.isSuccess) {
+                bookmarks = result.getOrNull() ?: emptyList()
+            } else {
+                errorMessage =
+                    "Error loading bookmarks: ${result.exceptionOrNull()?.localizedMessage}"
             }
+            isLoading = false
+
         }
     }
 }
