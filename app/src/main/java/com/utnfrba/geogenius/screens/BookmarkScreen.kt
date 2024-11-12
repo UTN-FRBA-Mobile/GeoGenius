@@ -43,9 +43,6 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
                         modifier = Modifier,
                         onClick = {
                             navController.navigate(Screen.PlaceDetail.withArgs(place.id)) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
                                 launchSingleTop = true
                                 restoreState = true
                             }
