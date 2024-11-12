@@ -3,7 +3,7 @@ import com.utnfrba.geogenius.network.BookmarkApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class BookmarkRepository {
+object BookmarkRepository {
 
     private var cachedBookmarks: List<BookmarkDTO>? = null
     private var lastFetchTime: Long = 0

@@ -20,7 +20,7 @@ class BookmarkViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 isLoading = true
-                val result = BookmarkRepository().getBookmarks()
+                val result = BookmarkRepository.getBookmarks()
                 if (result.isSuccess) {
                     bookmarks = result.getOrNull() ?: emptyList()
                 } else {
