@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -18,9 +19,8 @@ import androidx.navigation.navArgument
 import com.utnfrba.geogenius.navbar.BottomNavigationBar
 import com.utnfrba.geogenius.navbar.Screen
 import com.utnfrba.geogenius.screens.BookmarkScreen
+import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceDetailScreen
-import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace
-import com.utnfrba.geogenius.screens.bookmarkscreen.samplePlace2
 import com.utnfrba.geogenius.screens.filters.FilterScreen
 import com.utnfrba.geogenius.screens.maps.MapScreen
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme

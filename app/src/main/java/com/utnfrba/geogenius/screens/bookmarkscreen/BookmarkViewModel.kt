@@ -1,5 +1,6 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
+import BookmarkRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.utnfrba.geogenius.model.BookmarkDTO
@@ -19,7 +20,7 @@ class BookmarkViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 isLoading = true
-                val result = Result.success(sampleList)//repository.getBookmarks()
+                val result = BookmarkRepository().getBookmarks()
                 if (result.isSuccess) {
                     bookmarks = result.getOrNull() ?: emptyList()
                 } else {
