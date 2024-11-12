@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.utnfrba.geogenius.navbar.Screen
+import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.PlaceCard
 

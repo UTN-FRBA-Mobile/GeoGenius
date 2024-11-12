@@ -19,7 +19,7 @@ val samplePlace = BookmarkDTO(
     type = "Casa",
 )
 val samplePlace2 = BookmarkDTO(
-    id = "1",
+    id = "2",
     name = "Casa Lol",
     address = "Avenida Sas 123",
     rating = 4.5,

@@ -24,9 +24,9 @@ import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
+import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
-import com.utnfrba.geogenius.navbar.Screen
 import kotlin.math.min
 import kotlin.math.roundToInt
 
