@@ -29,15 +29,21 @@ class BookmarkRepository {
         return Result.success(cachedBookmarks ?: emptyList())
     }
 
-    fun filterByRating(minRating: Double): List<BookmarkDTO> {
-        return cachedBookmarks?.filter { it.rating >= minRating } ?: emptyList()
+    suspend fun getFilteredBookmarksByRating(minRating: Double): Result<List<BookmarkDTO>> {
+        return getBookmarks().map { bookmarks ->
+            bookmarks.filter { it.rating >= minRating }
+        }
     }
 
-    fun filterByType(type: String): List<BookmarkDTO> {
-        return cachedBookmarks?.filter { it.type.equals(type, ignoreCase = true) } ?: emptyList()
+    suspend fun getFilteredBookmarksByType(type: String): Result<List<BookmarkDTO>> {
+        return getBookmarks().map { bookmarks ->
+            bookmarks.filter { it.type.equals(type, ignoreCase = true) }
+        }
     }
 
-    fun filterByName(keyword: String): List<BookmarkDTO> {
-        return cachedBookmarks?.filter { it.name.contains(keyword, ignoreCase = true) } ?: emptyList()
+    suspend fun getFilteredBookmarksByName(keyword: String): Result<List<BookmarkDTO>> {
+        return getBookmarks().map { bookmarks ->
+            bookmarks.filter { it.name.contains(keyword, ignoreCase = true) }
+        }
     }
 }
