@@ -1,5 +1,6 @@
 package com.utnfrba.geogenius.screens.filters
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,12 +15,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import com.utnfrba.geogenius.screens.settings.SettingsMenu
+
+private const val USER_PREFERENCES_NAME = "filter_preferences"
+
+private val Context.dataStore by preferencesDataStore(
+    name = USER_PREFERENCES_NAME
+)
 
 @Composable
 fun FilterScreen() {
-    val filterViewModel: FilterViewModel = viewModel()
+    val filterViewModel: FilterViewModel = ViewModelProvider(this,
+        FilterViewModelFactory(FilterDataStore(dataStore))
+    )[FilterViewModel::class.java]
     val cafeCheckState by filterViewModel.cafeState.collectAsState()
     val museumCheckState by filterViewModel.museumState.collectAsState()
     val parkCheckState by filterViewModel.parkState.collectAsState()
