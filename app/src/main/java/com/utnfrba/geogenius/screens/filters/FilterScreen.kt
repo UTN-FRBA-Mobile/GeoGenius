@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.screens.filters
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.utnfrba.geogenius.screens.settings.SettingsMenu
 
@@ -23,9 +21,7 @@ import com.utnfrba.geogenius.screens.settings.SettingsMenu
 fun FilterScreen(
     filterViewModel: FilterViewModel = viewModel(factory = FilterViewModel.Factory)
 ) {
-    val cafeCheckState by filterViewModel.uiState.collectAsState()
-//    val museumCheckState by filterViewModel.museumState.collectAsState()
-//    val parkCheckState by filterViewModel.parkState.collectAsState()
+    val viewModelState by filterViewModel.uiState.collectAsState()
 
     Card(
         modifier = Modifier
@@ -36,26 +32,25 @@ fun FilterScreen(
             modifier = Modifier.padding(16.dp)
         ) {
             CheckboxWithLabel(
-                checked = cafeCheckState.cafeChecked,
+                checked = viewModelState.cafeChecked,
                 onCheckedChange = {
-                    filterViewModel.saveCafeFilter(it)
+                    filterViewModel.saveFilterValue(it, PreferencesKeys.CAFE_CHECKED)
                 },
                 label = "Cafés"
             )
 
             CheckboxWithLabel(
-                checked = false,
+                checked = viewModelState.museumChecked,
                 onCheckedChange = {
-//                    filterViewModel.setMuseumStatus(it)
+                    filterViewModel.saveFilterValue(it, PreferencesKeys.MUSEUM_CHECKED)
                 },
                 label = "Museos"
             )
 
             CheckboxWithLabel(
-                checked = false,
+                checked = viewModelState.parkChecked,
                 onCheckedChange = {
-//                    filterViewModel.setParkStatus(it)
-                },
+                    filterViewModel.saveFilterValue(it, PreferencesKeys.PARK_CHECKED)                },
                 label = "Parques"
             )
 

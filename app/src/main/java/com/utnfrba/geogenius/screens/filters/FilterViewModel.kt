@@ -1,5 +1,6 @@
 package com.utnfrba.geogenius.screens.filters
 
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -14,22 +15,24 @@ import kotlinx.coroutines.launch
 
 
 data class FilterState(
-    val cafeChecked: Boolean
+    val cafeChecked: Boolean,
+    val museumChecked: Boolean,
+    val parkChecked: Boolean
 )
 
 class FilterViewModel(private val dataStore: FilterDataStore) : ViewModel() {
     val uiState: StateFlow<FilterState> =
-        dataStore.cafeCheckedFlow.map { checked ->
-            FilterState(checked)
+        dataStore.stateFlow.map { checked ->
+            FilterState(cafeChecked = checked[0], museumChecked = checked[1], parkChecked = checked[2])
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = FilterState(false)
+            initialValue = FilterState(cafeChecked = false, museumChecked = false, parkChecked = false)
         )
 
-    fun saveCafeFilter(value: Boolean) {
+    fun saveFilterValue(value: Boolean, filter: Preferences.Key<Boolean>) {
         viewModelScope.launch {
-            dataStore.saveCafeChecked(value)
+            dataStore.saveFilterChanged(value, filter)
         }
     }
 
