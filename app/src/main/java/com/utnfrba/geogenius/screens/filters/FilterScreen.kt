@@ -54,7 +54,7 @@ fun FilterScreen(
                 label = "Parques"
             )
 
-            SettingsMenu()
+            SettingsMenu(filterViewModel)
         }
     }
 

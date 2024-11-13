@@ -14,14 +14,12 @@ import androidx.glance.GlanceTheme
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.components.FilledButton
 import androidx.glance.appwidget.components.Scaffold
 import androidx.glance.appwidget.components.TitleBar
 import androidx.glance.appwidget.provideContent
-import androidx.glance.appwidget.updateAll
 import androidx.glance.layout.Column
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
@@ -32,6 +30,7 @@ import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 import com.utnfrba.geogenius.navbar.Screen
+import com.utnfrba.geogenius.screens.filters.FilterViewModel
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -81,23 +80,21 @@ class GeoGeniusWidget : GlanceAppWidget() {
 
     @Composable
     fun Content(bookmarks: Array<BookmarkDTO>, modifier: GlanceModifier = GlanceModifier) {
-//        val bookmarkViewModel: WidgetViewModel = viewModel()
-//        val value by bookmarkViewModel.uiState.collectAsState()
-        val value = 4
-        // TODO java.lang.IllegalStateException: CompositionLocal LocalView not present
+        val filterViewModel: FilterViewModel = viewModel(factory = FilterViewModel.Factory)
+        val state by filterViewModel.uiState.collectAsState()
         Scaffold(
             modifier = modifier,
             backgroundColor = GlanceTheme.colors.widgetBackground,
             titleBar = {
                 TitleBar(
                     startIcon = ImageProvider(R.drawable.baseline_bookmark_24),
-                    title = "Mis bookmarks", // TODO add this to locals
+                    title = "Mis bookmarks",
                     textColor = GlanceTheme.colors.onSurface,
                 )
             }
         ) {
             Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.slice(0..<min(value, bookmarks.size)).forEach { b ->
+                bookmarks.slice(0..<min(state.widgetCount, bookmarks.size)).forEach { b ->
                     CardRow(b)
                     Spacer(modifier = GlanceModifier.padding(5.dp))
                 }
