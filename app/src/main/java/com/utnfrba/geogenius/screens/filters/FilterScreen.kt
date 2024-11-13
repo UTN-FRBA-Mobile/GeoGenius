@@ -16,23 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.utnfrba.geogenius.screens.settings.SettingsMenu
 
-private const val USER_PREFERENCES_NAME = "filter_preferences"
-
-private val Context.dataStore by preferencesDataStore(
-    name = USER_PREFERENCES_NAME
-)
-
 @Composable
-fun FilterScreen() {
-    val filterViewModel: FilterViewModel = ViewModelProvider(this,
-        FilterViewModelFactory(FilterDataStore(dataStore))
-    )[FilterViewModel::class.java]
-    val cafeCheckState by filterViewModel.cafeState.collectAsState()
-    val museumCheckState by filterViewModel.museumState.collectAsState()
-    val parkCheckState by filterViewModel.parkState.collectAsState()
+fun FilterScreen(
+    filterViewModel: FilterViewModel = viewModel(factory = FilterViewModel.Factory)
+) {
+    val cafeCheckState by filterViewModel.uiState.collectAsState()
+//    val museumCheckState by filterViewModel.museumState.collectAsState()
+//    val parkCheckState by filterViewModel.parkState.collectAsState()
 
     Card(
         modifier = Modifier
@@ -43,25 +36,25 @@ fun FilterScreen() {
             modifier = Modifier.padding(16.dp)
         ) {
             CheckboxWithLabel(
-                checked = cafeCheckState,
+                checked = cafeCheckState.cafeChecked,
                 onCheckedChange = {
-                    filterViewModel.setCafeStatus(it)
+                    filterViewModel.saveCafeFilter(it)
                 },
                 label = "Cafés"
             )
 
             CheckboxWithLabel(
-                checked = museumCheckState,
+                checked = false,
                 onCheckedChange = {
-                    filterViewModel.setMuseumStatus(it)
+//                    filterViewModel.setMuseumStatus(it)
                 },
                 label = "Museos"
             )
 
             CheckboxWithLabel(
-                checked = parkCheckState,
+                checked = false,
                 onCheckedChange = {
-                    filterViewModel.setParkStatus(it)
+//                    filterViewModel.setParkStatus(it)
                 },
                 label = "Parques"
             )

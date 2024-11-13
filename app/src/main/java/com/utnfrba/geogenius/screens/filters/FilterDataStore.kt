@@ -30,7 +30,7 @@ class FilterDataStore(
         cafeChecked
     }
 
-    suspend fun updateCafeChecked(newValue: Boolean) {
+    suspend fun saveCafeChecked(newValue: Boolean) {
         dataStore.edit { preferences ->
             preferences[CAFE_CHECKED] = newValue
         }

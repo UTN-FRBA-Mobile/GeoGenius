@@ -2,66 +2,43 @@ package com.utnfrba.geogenius.screens.filters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
-private const val USER_PREFERENCES_NAME = "filter_preferences"
+data class FilterState(
+    val cafeChecked: Boolean
+)
 
-class FilterViewModel(private val dataStore: FilterDataStore): ViewModel() {
-    // save state in preferences
+class FilterViewModel(private val dataStore: FilterDataStore) : ViewModel() {
+    val uiState: StateFlow<FilterState> =
+        dataStore.cafeCheckedFlow.map { checked ->
+            FilterState(checked)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = FilterState(false)
+        )
 
-    private val filterPreferencesFlow = dataStore.cafeCheckedFlow
-
-    val initialSetupEvent = liveData {
-        emit(dataStore.fetchInitialPreferences())
-    }
-
-    private val _cafeChecked = MutableStateFlow(false) // TODO init here with pref val
-    val cafeState: StateFlow<Boolean> = _cafeChecked.asStateFlow()
-
-    private val _museumChecked = MutableStateFlow(false)
-    val museumState: StateFlow<Boolean> = _museumChecked.asStateFlow()
-
-    private val _parkChecked = MutableStateFlow(false)
-    val parkState: StateFlow<Boolean> = _parkChecked.asStateFlow()
-
-    fun setCafeStatus(newValue: Boolean) {
+    fun saveCafeFilter(value: Boolean) {
         viewModelScope.launch {
-            dataStore.updateCafeChecked(newValue)
-        }
-        _cafeChecked.update {
-            newValue
+            dataStore.saveCafeChecked(value)
         }
     }
 
-    fun setMuseumStatus(newValue: Boolean) {
-        _museumChecked.update {
-            newValue
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as FilterApplication)
+                FilterViewModel(application.filterRepository)
+            }
         }
-    }
-
-    fun setParkStatus(newValue: Boolean) {
-        _parkChecked.update {
-            newValue
-        }
-    }
-}
-
-class FilterViewModelFactory(
-    private val repository: FilterDataStore,
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FilterViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return FilterViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
