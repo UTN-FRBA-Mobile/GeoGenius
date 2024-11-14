@@ -48,75 +48,81 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
         }
     }
 
-    if (viewModel.isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    } else if (viewModel.errorMessage != null) {
-        Text(text = "Error: ${viewModel.errorMessage}", color = Color.Red)
-    } else {
-        bookmark?.let {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start
+    when {
+        viewModel.isLoading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                CircularProgressIndicator()
+            }
+        }
+
+        viewModel.errorMessage != null -> {
+            Text(text = "Error: ${viewModel.errorMessage}", color = Color.Red)
+        }
+
+        else -> {
+            bookmark?.let {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
-                        )
-                    }
-                    Text(
-                        text = it.name,
-                        fontSize = 30.sp,
-                        style = MaterialTheme.typography.titleLarge
-                    )
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Volver"
+                            )
+                        }
                         Text(
-                            text = it.rating.toString(),
+                            text = it.name,
                             fontSize = 30.sp,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
+                            style = MaterialTheme.typography.titleLarge
                         )
-                        Icon(
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = null,
-                            tint = Color.hsv(50f, 0.8f, 0.8f),
-                            modifier = Modifier
-                                .padding(start = 4.dp)
-                                .size(30.dp)
-                        )
-                    }
-                }
-                Text(text = it.address, style = MaterialTheme.typography.bodyLarge)
-                Spacer(modifier = Modifier.height(8.dp))
 
-                LazyRow {
-                    items(it.images) { imageUrl ->
-                        Image(
-                            painter = rememberAsyncImagePainter(model = imageUrl),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(200.dp)
-                                .padding(end = 8.dp)
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = it.rating.toString(),
+                                fontSize = 30.sp,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = null,
+                                tint = Color.hsv(50f, 0.8f, 0.8f),
+                                modifier = Modifier
+                                    .padding(start = 4.dp)
+                                    .size(30.dp)
+                            )
+                        }
                     }
-                }
+                    Text(text = it.address, style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = it.description, style = MaterialTheme.typography.bodyLarge)
+                    LazyRow {
+                        items(it.images) { imageUrl ->
+                            Image(
+                                painter = rememberAsyncImagePainter(model = imageUrl),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .padding(end = 8.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = it.description, style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
     }

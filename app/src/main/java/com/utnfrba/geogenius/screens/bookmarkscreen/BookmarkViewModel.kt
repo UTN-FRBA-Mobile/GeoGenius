@@ -4,30 +4,31 @@ import BookmarkRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.utnfrba.geogenius.model.BookmarkDTO
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class BookmarkViewModel : ViewModel() {
-    var bookmarks: List<BookmarkDTO> = emptyList()
-        private set
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
 
-    var errorMessage: String? = null
-        private set
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
-    var isLoading: Boolean = true
-        private set
+    private val _bookmarks = MutableStateFlow<List<BookmarkDTO>>(emptyList())
+    val bookmarks: StateFlow<List<BookmarkDTO>> = _bookmarks
 
     init {
         viewModelScope.launch {
-            isLoading = true
+            _isLoading.value = true
             val result = BookmarkRepository.getBookmarks()
             if (result.isSuccess) {
-                bookmarks = result.getOrNull() ?: emptyList()
+                _bookmarks.value = result.getOrNull() ?: emptyList()
             } else {
-                errorMessage =
+                _errorMessage.value =
                     "Error loading bookmarks: ${result.exceptionOrNull()?.localizedMessage}"
             }
-            isLoading = false
-
+            _isLoading.value = false
         }
     }
 }

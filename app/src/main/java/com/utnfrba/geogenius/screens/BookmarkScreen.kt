@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,37 +22,43 @@ import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkCard
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
-    val bookmarks = bookmarkViewModel.bookmarks
-    val isLoading = bookmarkViewModel.isLoading
-    val errorMessage = bookmarkViewModel.errorMessage
+    val bookmarks = bookmarkViewModel.bookmarks.collectAsState()
+    val isLoading = bookmarkViewModel.isLoading.collectAsState()
+    val errorMessage = bookmarkViewModel.errorMessage.collectAsState()
 
-    if (isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    } else if (errorMessage != null) {
-        Text(text = "Error: $errorMessage", color = Color.Red)
-    } else {
-        LazyColumn {
-            items(bookmarks) { bookmark ->
-                BookmarkCard(
-                    bookmark,
-                    modifier = Modifier,
-                    onClick = {
-                        navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                )
+    when {
+        isLoading.value -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
 
+        errorMessage.value != null -> {
+            Text(text = "Error: ${errorMessage.value}", color = Color.Red)
+        }
+
+        else -> {
+            LazyColumn {
+                items(bookmarks.value) { bookmark ->
+                    BookmarkCard(
+                        bookmark,
+                        modifier = Modifier,
+                        onClick = {
+                            navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
+            }
+        }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
