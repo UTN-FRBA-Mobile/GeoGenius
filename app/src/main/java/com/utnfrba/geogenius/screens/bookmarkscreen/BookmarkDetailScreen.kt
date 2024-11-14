@@ -36,7 +36,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
     val viewModel: BookmarkDetailViewModel = viewModel()
@@ -108,17 +113,33 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
                     Text(text = it.address, style = MaterialTheme.typography.bodyLarge)
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    LazyRow {
-                        items(it.images) { imageUrl ->
-                            AsyncImage(
-                                model = imageUrl,
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(200.dp)
-                                    .padding(end = 8.dp)
-                            )
-                        }
+                    val pagerState = rememberPagerState()
+                    HorizontalPager(
+                        count = it.images.size,
+                        state = pagerState,
+                        modifier = Modifier.fillMaxWidth()
+                    ) { page ->
+                        AsyncImage(
+                            model = it.images[page],
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(250.dp)
+                                .padding(end = 8.dp)
+                        )
+                    }
+                    if (it.images.size > 1) {
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        HorizontalPagerIndicator(
+                            pagerState = pagerState,
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(8.dp),
+                            activeColor = MaterialTheme.colorScheme.primary,
+                            inactiveColor = Color.Gray
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))

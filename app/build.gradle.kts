@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation("io.coil-kt.coil3:coil-compose:3.0.2")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.2")
+    implementation("com.google.accompanist:accompanist-pager:0.29.0-alpha")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.29.0-alpha")
     implementation(libs.play.services.maps)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
