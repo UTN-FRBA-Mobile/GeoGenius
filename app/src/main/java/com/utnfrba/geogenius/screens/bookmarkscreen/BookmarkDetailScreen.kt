@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import coil3.compose.rememberAsyncImagePainter
+import coil3.compose.AsyncImage
 
 @Composable
 fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
@@ -110,9 +110,10 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
 
                     LazyRow {
                         items(it.images) { imageUrl ->
-                            Image(
-                                painter = rememberAsyncImagePainter(model = imageUrl),
+                            AsyncImage(
+                                model = imageUrl,
                                 contentDescription = null,
+                                contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .size(200.dp)
                                     .padding(end = 8.dp)
