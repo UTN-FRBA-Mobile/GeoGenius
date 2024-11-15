@@ -55,8 +55,8 @@ class GeoGeniusWidget : GlanceAppWidget() {
             Content(
                 arrayOf(
                     BookmarkDTO(
-                        id = "0",
-                        name = "Cafe uno",
+                        id = "1",
+                        name = "Cabildo",
                         description = "Gran cafe",
                         longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
                         address = "Foo 123",
@@ -66,8 +66,8 @@ class GeoGeniusWidget : GlanceAppWidget() {
                         type = "cafe",
                     ),
                     BookmarkDTO(
-                        id = "1",
-                        name = "Cafe dos",
+                        id = "2",
+                        name = "Las violetas",
                         description = "Gran cafe",
                         longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
                         address = "Foo 123",
