@@ -27,7 +27,7 @@ fun GeoGeniusNavGraph(
         modifier = Modifier.padding(paddingValues)
     ) {
         composable(Screen.Filter.route) { FilterScreen() }
-        composable(Screen.Map.route) { MapScreen() }
+        composable(Screen.Map.route) { MapScreen(emptyList()) }
         composable(Screen.Bookmark.route) {
             val bookmarkViewModel: BookmarkViewModel = viewModel()
             BookmarkScreen(bookmarkViewModel, navController)
