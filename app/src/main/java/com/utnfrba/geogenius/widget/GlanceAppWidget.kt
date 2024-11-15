@@ -29,9 +29,9 @@ import androidx.glance.layout.padding
 import androidx.glance.state.GlanceStateDefinition
 import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
+import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
-import com.utnfrba.geogenius.navbar.Screen
 import com.utnfrba.geogenius.screens.filters.DATASTORE_NAME
 import com.utnfrba.geogenius.screens.filters.PreferencesKeys
 import java.io.File
@@ -120,7 +120,7 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
             Intent(context.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                .setData(("https://geogenius.utnfrba.com/" + Screen.PlaceDetail.route + "?placeId=" + bookmark.id).toUri()),
+                .setData(("https://geogenius.utnfrba.com/" + Screen.BookmarkDetail.route + "?placeId=" + bookmark.id).toUri()),
         ),
         icon = ImageProvider(arrowDirection),
         modifier = modifier.padding(5.dp).fillMaxWidth(),
