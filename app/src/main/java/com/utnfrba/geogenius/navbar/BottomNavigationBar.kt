@@ -15,11 +15,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.utnfrba.geogenius.appnavigation.Screen
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(onClick: (route: String) -> Unit) {
     var selectedItem by remember { mutableIntStateOf(1) }
-    val currentRoute = currentRoute(navController)
 
-    if (currentRoute != Screen.BookmarkDetail.route) {
+
         NavigationBar {
             BottomNavigationBarItem().getBottomNavigationItems().forEachIndexed { index, item ->
                 NavigationBarItem(
@@ -32,21 +31,13 @@ fun BottomNavigationBar(navController: NavHostController) {
                     selected = selectedItem == index,
                     onClick = {
                         selectedItem = index
-                        if (navController.currentDestination?.route != item.route) {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
+                        onClick(item.route)
                     },
                     label = { Text(item.label) }
                 )
             }
         }
-    }
+
 }
 
 @Composable
