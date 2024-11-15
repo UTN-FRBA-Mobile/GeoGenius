@@ -3,11 +3,12 @@ package com.utnfrba.geogenius.widget
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -20,17 +21,20 @@ import androidx.glance.appwidget.components.FilledButton
 import androidx.glance.appwidget.components.Scaffold
 import androidx.glance.appwidget.components.TitleBar
 import androidx.glance.appwidget.provideContent
+import androidx.glance.currentState
 import androidx.glance.layout.Column
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.glance.state.GlanceStateDefinition
 import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 import com.utnfrba.geogenius.navbar.Screen
-import com.utnfrba.geogenius.screens.filters.FilterViewModel
+import com.utnfrba.geogenius.screens.filters.DATASTORE_NAME
+import com.utnfrba.geogenius.screens.filters.PreferencesKeys
+import java.io.File
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -40,18 +44,19 @@ class GlanceAppWidget : GlanceAppWidgetReceiver() {
 }
 
 class GeoGeniusWidget : GlanceAppWidget() {
+    override val stateDefinition: GlanceStateDefinition<*>
+        get() = CustomGlanceStateDefinition
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
 
-        // In this method, load data needed to render the AppWidget.
-        // Use `withContext` to switch to another thread for long running
-        // operations.
-
         provideContent {
+            val prefs = currentState<Preferences>()
+            val deserializedList = remember { prefs[PreferencesKeys.WIDGET_COUNT] ?: 1 }
             Content(
                 arrayOf(
                     BookmarkDTO(
                         id = "0",
-                        name = "Cafe lol",
+                        name = "Cafe uno",
                         description = "Gran cafe",
                         longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
                         address = "Foo 123",
@@ -62,26 +67,26 @@ class GeoGeniusWidget : GlanceAppWidget() {
                     ),
                     BookmarkDTO(
                         id = "1",
-                        name = "Cafe lol",
+                        name = "Cafe dos",
                         description = "Gran cafe",
                         longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
                         address = "Foo 123",
                         rating = 4.3,
                         images = listOf(),
-                        coordinates = Coordinate(-34.0923, -53.43556),
+                        coordinates = Coordinate(34.0923, -53.43556),
                         type = "cafe",
                     )
-                )
+                ), deserializedList
             )
         }
-
-
     }
 
     @Composable
-    fun Content(bookmarks: Array<BookmarkDTO>, modifier: GlanceModifier = GlanceModifier) {
-        val filterViewModel: FilterViewModel = viewModel(factory = FilterViewModel.Factory)
-        val state by filterViewModel.uiState.collectAsState()
+    fun Content(
+        bookmarks: Array<BookmarkDTO>,
+        widgetCount: Int,
+        modifier: GlanceModifier = GlanceModifier
+    ) {
         Scaffold(
             modifier = modifier,
             backgroundColor = GlanceTheme.colors.widgetBackground,
@@ -94,7 +99,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
             }
         ) {
             Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.slice(0..<min(state.widgetCount, bookmarks.size)).forEach { b ->
+                bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
                     CardRow(b)
                     Spacer(modifier = GlanceModifier.padding(5.dp))
                 }
@@ -122,33 +127,17 @@ private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModi
     )
 }
 
-@Preview
-@Composable
-fun PreviewWidget() {
-    GeoGeniusWidget().Content(
-        arrayOf(
-            BookmarkDTO(
-                id = "1",
-                name = "Casa simpson",
-                description = "Gran cafe",
-                longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
-                address = "Foo 123",
-                rating = 4.3,
-                images = listOf(),
-                coordinates = Coordinate(-34.0923, -53.43556),
-                type = "cafe",
-            ),
-            BookmarkDTO(
-                id = "2",
-                name = "Casa lol",
-                description = "Gran cafe",
-                longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
-                address = "Foo 123",
-                rating = 4.3,
-                images = listOf(),
-                coordinates = Coordinate(-34.0923, -53.43556),
-                type = "cafe",
-            )
-        )
-    )
+object CustomGlanceStateDefinition : GlanceStateDefinition<Preferences> {
+    override suspend fun getDataStore(context: Context, fileKey: String): DataStore<Preferences> {
+        return context.dataStore
+    }
+
+    override fun getLocation(context: Context, fileKey: String): File {
+        return File(context.applicationContext.filesDir, "datastore/$DATASTORE_NAME")
+    }
+
+    private val Context.dataStore: DataStore<Preferences>
+            by preferencesDataStore(name = DATASTORE_NAME)
 }
+
+
