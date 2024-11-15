@@ -26,7 +26,7 @@ import com.utnfrba.geogenius.model.Coordinate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, navController: NavController, modifier: Modifier = Modifier) {
+fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, onSearchClick: (id: String) -> Unit, modifier: Modifier = Modifier) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
 
@@ -55,7 +55,7 @@ fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, navController: NavContro
             items(filtered.size) { bookmarkIndex ->
                 TextButton(
                     onClick = {
-                        navController.navigate(Screen.BookmarkDetail.route + "/${filtered[bookmarkIndex].id}")
+                        onSearchClick(filtered[bookmarkIndex].id)
                     },
                     Modifier.background(Color.Transparent)
                 ) {
@@ -101,5 +101,5 @@ fun SearchBarPreview() {
             type = "cafe",
         )
     )
-    SearchBarComponent(bookmarkDTOS, rememberNavController())
+    SearchBarComponent(bookmarkDTOS, {})
 }

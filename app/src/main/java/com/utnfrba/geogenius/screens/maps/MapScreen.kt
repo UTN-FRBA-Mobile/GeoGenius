@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 
@@ -99,7 +100,7 @@ fun MapScreen(navController: NavController) {
             }
         }
 
-        SearchBarComponent(bookmarks, navController)
+        SearchBarComponent(bookmarks, {id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") })
     }
 }
 
@@ -118,7 +119,7 @@ private fun addTestBookmarks(): List<BookmarkDTO> {
     // Agregar un bookmark en 37°25'25.9"N 122°05'24.5"W
     val bookmark1 = BookmarkDTO(
         id = "1",
-        name = "Ubicación de Prueba 1",
+        name = "Cabildo",
         description = "Descripción para ubicación de prueba 1",
         longDescription = "Esta es una descripción larga de la ubicación de prueba 1",
         address = "Dirección de prueba 1",
@@ -131,7 +132,7 @@ private fun addTestBookmarks(): List<BookmarkDTO> {
     // Agregar un bookmark en 37°25'14.1"N 122°04'41.0"W
     val bookmark2 = BookmarkDTO(
         id = "2",
-        name = "Ubicación de Prueba 2",
+        name = "Las violetas",
         description = "Descripción para ubicación de prueba 2",
         longDescription = "Esta es una descripción larga de la ubicación de prueba 2",
         address = "Dirección de prueba 2",
