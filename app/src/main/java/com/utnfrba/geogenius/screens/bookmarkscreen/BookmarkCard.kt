@@ -28,10 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.utnfrba.geogenius.model.BookmarkDTO
 
 @Composable
-fun PlaceCard(
-    model: PlaceModel,
+fun BookmarkCard(
+    model: BookmarkDTO,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -48,7 +49,7 @@ fun PlaceCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = "https://thrivethemes.com/wp-content/uploads/2018/05/photo-jpeg-example.jpg",
+                model = model.images[0],
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -100,20 +101,9 @@ fun PlaceCard(
 @Preview(showBackground = true)
 @Composable
 fun PlaceCardPreview() {
-    PlaceCard(
+    BookmarkCard(
         samplePlace,
         modifier = Modifier,
         onClick = {}
     )
-}
-
-@Preview
-@Composable
-fun LoadingImageFromInternetCoil() {
-    // [START android_compose_images_load_internet_coil]
-    AsyncImage(
-        model = "https://example.com/image.jpg",
-        contentDescription = "Translated description of what the image contains"
-    )
-    // [END android_compose_images_load_internet_coil]
 }

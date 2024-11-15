@@ -10,18 +10,17 @@ import retrofit2.http.GET
 private const val BASE_URL =
     "https://run.mocky.io"
 
-private val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
-    .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-    .build()
-
 interface BookmarkApiService {
-    @GET("/v3/16900848-8010-4fb0-8989-1afa18739b7b")
+    @GET("/v3/2daeddf1-158c-4e88-b17b-4cee39702e47")
     suspend fun getBookmarks(): List<BookmarkDTO>
 }
 
 object BookmarkApi {
     val retrofitService: BookmarkApiService by lazy {
-        retrofit.create(BookmarkApiService::class.java)
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .build()
+            .create(BookmarkApiService::class.java)
     }
 }
