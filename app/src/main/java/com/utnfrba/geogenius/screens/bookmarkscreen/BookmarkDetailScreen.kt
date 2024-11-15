@@ -141,7 +141,7 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = it.description, style = MaterialTheme.typography.bodyLarge)
+                    Text(text = it.longDescription, style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }
