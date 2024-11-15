@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.utnfrba.geogenius.model.BookmarkDTO
+import com.utnfrba.geogenius.model.Coordinate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarComponent(modifier: Modifier = Modifier) {
+fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, modifier: Modifier = Modifier) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
-    val countriesList = listOf("Argentina", "Brazil", "Chile")
 
     SearchBar(
         query = searchQuery,
@@ -42,18 +43,20 @@ fun SearchBarComponent(modifier: Modifier = Modifier) {
             .padding(16.dp),
     ) {
         LazyColumn {
-            val filtered = countriesList.filter { country ->
+            val filtered = bookmarkList.filter { b ->
                 if (searchQuery != "") {
-                    country.uppercase().contains(searchQuery.trim().uppercase())
+                    b.name.uppercase().contains(searchQuery.trim().uppercase())
                 } else false
             }
-            items(filtered.size) { country ->
+            items(filtered.size) { bookmarkIndex ->
                 TextButton(
-                    onClick = {},
+                    onClick = {
+
+                    },
                     Modifier.background(Color.Transparent)
                 ) {
                     Text(
-                        text = filtered[country],
+                        text = filtered[bookmarkIndex].name,
                         modifier = modifier.padding(
                             start = 8.dp,
                             top = 4.dp,
@@ -70,5 +73,29 @@ fun SearchBarComponent(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun SearchBarPreview() {
-    SearchBarComponent()
+    val bookmarkDTOS = listOf(
+        BookmarkDTO(
+            id = "1",
+            name = "Cabildo",
+            description = "Gran cafe",
+            longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
+            address = "Foo 123",
+            rating = 4.3,
+            images = listOf(),
+            coordinates = Coordinate(-34.0923, -53.43556),
+            type = "cafe",
+        ),
+        BookmarkDTO(
+            id = "2",
+            name = "Las violetas",
+            description = "Gran cafe",
+            longDescription = "Buen lugar para personas fanaticas del cafe con una larga historia",
+            address = "Foo 123",
+            rating = 4.3,
+            images = listOf(),
+            coordinates = Coordinate(34.0923, -53.43556),
+            type = "cafe",
+        )
+    )
+    SearchBarComponent(bookmarkDTOS)
 }

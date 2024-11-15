@@ -104,7 +104,7 @@ fun MapScreen(initialBookmarks: List<BookmarkDTO>) {
             }
         }
 
-        SearchBarComponent()
+        SearchBarComponent(initialBookmarks)
     }
 }
 
