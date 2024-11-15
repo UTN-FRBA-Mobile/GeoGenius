@@ -24,17 +24,21 @@ data class FilterState(
 class FilterViewModel(private val dataStore: FilterDataStore) : ViewModel() {
     val uiState: StateFlow<FilterState> =
         dataStore.stateFlow.map { checked ->
-            FilterState(cafeChecked = checked.cafeChecked,
+            FilterState(
+                cafeChecked = checked.cafeChecked,
                 museumChecked = checked.museumChecked,
                 parkChecked = checked.parkChecked,
-                widgetCount = checked.widgetCount)
+                widgetCount = checked.widgetCount
+            )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = FilterState(cafeChecked = false,
+            initialValue = FilterState(
+                cafeChecked = false,
                 museumChecked = false,
                 parkChecked = false,
-                widgetCount = 1)
+                widgetCount = 1
+            )
         )
 
 

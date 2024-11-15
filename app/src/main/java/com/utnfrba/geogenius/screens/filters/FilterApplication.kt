@@ -11,7 +11,8 @@ const val DATASTORE_NAME = "setting"
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = DATASTORE_NAME
 )
-class FilterApplication: Application() {
+
+class FilterApplication : Application() {
     lateinit var filterRepository: FilterDataStore
     override fun onCreate() {
         super.onCreate()

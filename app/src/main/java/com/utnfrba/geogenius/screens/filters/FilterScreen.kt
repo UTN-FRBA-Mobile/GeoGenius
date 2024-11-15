@@ -50,7 +50,8 @@ fun FilterScreen(
             CheckboxWithLabel(
                 checked = viewModelState.parkChecked,
                 onCheckedChange = {
-                    filterViewModel.saveFilterValue(it, PreferencesKeys.PARK_CHECKED)                },
+                    filterViewModel.saveFilterValue(it, PreferencesKeys.PARK_CHECKED)
+                },
                 label = "Parques"
             )
 

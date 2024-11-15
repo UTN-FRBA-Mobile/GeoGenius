@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.appnavigation.Screen
-import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkCard
+import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {

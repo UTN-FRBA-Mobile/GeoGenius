@@ -36,7 +36,7 @@ class FilterDataStore(
         }
     }
 
-    private fun getProps(): Flow<FilterState>{
+    private fun getProps(): Flow<FilterState> {
         return dataStore.data.catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -48,7 +48,7 @@ class FilterDataStore(
             val museumChecked = preferences[PreferencesKeys.MUSEUM_CHECKED] ?: false
             val parkChecked = preferences[PreferencesKeys.PARK_CHECKED] ?: false
             val widgetCount = preferences[PreferencesKeys.WIDGET_COUNT] ?: 1
-            FilterState(cafeChecked,museumChecked,parkChecked,widgetCount)
+            FilterState(cafeChecked, museumChecked, parkChecked, widgetCount)
         }
     }
     // https://github.com/android/codelab-android-datastore/blob/preferences_datastore/app/src/main/java/com/codelab/android/datastore/data/UserPreferencesRepository.kt

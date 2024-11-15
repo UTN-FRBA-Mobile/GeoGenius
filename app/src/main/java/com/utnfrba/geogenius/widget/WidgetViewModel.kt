@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class WidgetViewModel: ViewModel() {
+class WidgetViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(1)
     val uiState: StateFlow<Int> = _uiState.asStateFlow()
 
