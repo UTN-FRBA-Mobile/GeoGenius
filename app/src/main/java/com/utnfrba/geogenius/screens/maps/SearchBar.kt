@@ -1,5 +1,6 @@
 package com.utnfrba.geogenius.screens.maps
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,12 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, modifier: Modifier = Modifier) {
+fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, navController: NavController, modifier: Modifier = Modifier) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
 
@@ -51,7 +55,7 @@ fun SearchBarComponent(bookmarkList: List<BookmarkDTO>, modifier: Modifier = Mod
             items(filtered.size) { bookmarkIndex ->
                 TextButton(
                     onClick = {
-
+                        navController.navigate(Screen.BookmarkDetail.route + "/${filtered[bookmarkIndex].id}")
                     },
                     Modifier.background(Color.Transparent)
                 ) {
@@ -97,5 +101,5 @@ fun SearchBarPreview() {
             type = "cafe",
         )
     )
-    SearchBarComponent(bookmarkDTOS)
+    SearchBarComponent(bookmarkDTOS, rememberNavController())
 }

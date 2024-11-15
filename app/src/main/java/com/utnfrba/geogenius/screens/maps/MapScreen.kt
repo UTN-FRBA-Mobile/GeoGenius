@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -16,9 +16,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
+import androidx.navigation.NavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,10 +30,8 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 
 @Composable
-fun MapScreen(initialBookmarks: List<BookmarkDTO>) {
-    val bookmarks = remember { initialBookmarks.toMutableList() }
-
-    addTestBookmarks(bookmarks)
+fun MapScreen(navController: NavController) {
+    val bookmarks = addTestBookmarks()
 
     val context = LocalContext.current
     val mapView = rememberMapViewWithLifecycle(context)
@@ -72,10 +70,7 @@ fun MapScreen(initialBookmarks: List<BookmarkDTO>) {
         }
     }
 
-    BoxWithConstraints {
-        val maxHeight = this.maxHeight
-        val topHeight: Dp = maxHeight * 1 / 10
-
+    Box {
         AndroidView({ mapView }) {
             mapView.getMapAsync { googleMap: GoogleMap ->
                 if (hasLocationPermission) {
@@ -104,7 +99,7 @@ fun MapScreen(initialBookmarks: List<BookmarkDTO>) {
             }
         }
 
-        SearchBarComponent(initialBookmarks)
+        SearchBarComponent(bookmarks, navController)
     }
 }
 
@@ -119,7 +114,7 @@ private fun addBookmarksToMap(googleMap: GoogleMap, bookmarks: List<BookmarkDTO>
     }
 }
 
-private fun addTestBookmarks(bookmarks: MutableList<BookmarkDTO>) {
+private fun addTestBookmarks(): List<BookmarkDTO> {
     // Agregar un bookmark en 37°25'25.9"N 122°05'24.5"W
     val bookmark1 = BookmarkDTO(
         id = "1",
@@ -147,8 +142,7 @@ private fun addTestBookmarks(bookmarks: MutableList<BookmarkDTO>) {
     )
 
     // Añadir los bookmarks a la lista
-    bookmarks.add(bookmark1)
-    bookmarks.add(bookmark2)
+    return listOf(bookmark1, bookmark2)
 }
 
 
