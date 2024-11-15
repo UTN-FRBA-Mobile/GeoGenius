@@ -20,8 +20,8 @@ class BookmarkDetailViewModel : ViewModel() {
             id?.let {
                 val result = BookmarkRepository.getBookmarksById(it)
                 if (result.isSuccess) {
-                    _bookmark.value = result.getOrElse{
-                        errorMessage -> throw Error(errorMessage)
+                    _bookmark.value = result.getOrElse { errorMessage ->
+                        throw Error(errorMessage)
                     }
                 } else {
                     errorMessage =

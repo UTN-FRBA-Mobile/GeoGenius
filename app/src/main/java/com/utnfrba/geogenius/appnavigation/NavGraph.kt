@@ -10,7 +10,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.screens.BookmarkScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkDetailScreen
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel

@@ -100,7 +100,9 @@ fun MapScreen(navController: NavController) {
             }
         }
 
-        SearchBarComponent(bookmarks, {id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") })
+        SearchBarComponent(
+            bookmarks,
+            { id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") })
     }
 }
 
