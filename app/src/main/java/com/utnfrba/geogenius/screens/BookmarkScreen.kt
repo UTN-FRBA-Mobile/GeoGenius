@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,11 +17,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.appnavigation.Screen
+import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkCard
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
+    LoadingBookmarkComposable(bookmarkViewModel) {
+        LazyColumn {
+            items(it.value) { bookmark ->
+                BookmarkCard(
+                    bookmark,
+                    modifier = Modifier,
+                    onClick = {
+                        navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingBookmarkComposable(bookmarkViewModel: BookmarkViewModel, composable: @Composable (bookmarks: State<List<BookmarkDTO>>) -> Unit ) {
     val bookmarks = bookmarkViewModel.bookmarks.collectAsState()
     val isLoading = bookmarkViewModel.isLoading.collectAsState()
     val errorMessage = bookmarkViewModel.errorMessage.collectAsState()
@@ -40,20 +62,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
         }
 
         else -> {
-            LazyColumn {
-                items(bookmarks.value) { bookmark ->
-                    BookmarkCard(
-                        bookmark,
-                        modifier = Modifier,
-                        onClick = {
-                            navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
-                }
-            }
+            composable(bookmarks)
         }
     }
 }
