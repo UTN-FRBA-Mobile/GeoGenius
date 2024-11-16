@@ -56,6 +56,7 @@ fun SearchBarComponent(
                 TextButton(
                     onClick = {
                         onSearchClick(filtered[bookmarkIndex].id)
+                        isSearching = false
                     },
                     Modifier.background(Color.Transparent)
                 ) {

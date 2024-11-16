@@ -70,10 +70,11 @@ fun MapScreen(navController: NavController) {
             )
         }
     }
-
+    lateinit var gMap: GoogleMap
     Box {
         AndroidView({ mapView }) {
             mapView.getMapAsync { googleMap: GoogleMap ->
+                gMap = googleMap
                 if (hasLocationPermission) {
                     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                         if (location != null) {
@@ -96,29 +97,51 @@ fun MapScreen(navController: NavController) {
                     }
                 }
 
-                addBookmarksToMap(googleMap, bookmarks)
+                addBookmarksToMap(googleMap, bookmarks
+                ) { marker ->
+                    marker.showInfoWindow()
+                    val markerLocation = marker.position
+                    val bookmark = bookmarks.find { b ->
+                        b.coordinates.x == markerLocation.latitude && b.coordinates.y == markerLocation.longitude
+                    }
+                    if (bookmark != null) {
+                        navController.navigate(Screen.BookmarkDetail.route + "/${bookmark.id}")
+                    }
+                    true
+                }
             }
         }
-
+        // old: { id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") }
         SearchBarComponent(
             bookmarks,
-            { id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") })
+            { id: String ->
+                val bookmark = bookmarks.find { b -> b.id == id }
+                if (bookmark != null) {
+                    gMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            LatLng(bookmark.coordinates.x, bookmark.coordinates.y),
+                            15f
+                        )
+                    )
+                }
+            })
     }
 }
 
 
-private fun addBookmarksToMap(googleMap: GoogleMap, bookmarks: List<BookmarkDTO>) {
+private fun addBookmarksToMap(googleMap: GoogleMap, bookmarks: List<BookmarkDTO>, onMarkerClick: GoogleMap.OnMarkerClickListener) {
     for (bookmark in bookmarks) {
         val position = LatLng(bookmark.coordinates.x, bookmark.coordinates.y)
         val markerOptions = MarkerOptions()
             .position(position)
             .title(bookmark.name)
         googleMap.addMarker(markerOptions)
+        googleMap.setOnMarkerClickListener(onMarkerClick)
     }
 }
 
 private fun addTestBookmarks(): List<BookmarkDTO> {
-    // Agregar un bookmark en 37°25'25.9"N 122°05'24.5"W
+    // TODO get from repo
     val bookmark1 = BookmarkDTO(
         id = "1",
         name = "Cabildo",
@@ -131,7 +154,6 @@ private fun addTestBookmarks(): List<BookmarkDTO> {
         type = "Test"
     )
 
-    // Agregar un bookmark en 37°25'14.1"N 122°04'41.0"W
     val bookmark2 = BookmarkDTO(
         id = "2",
         name = "Las violetas",
@@ -144,7 +166,6 @@ private fun addTestBookmarks(): List<BookmarkDTO> {
         type = "Test"
     )
 
-    // Añadir los bookmarks a la lista
     return listOf(bookmark1, bookmark2)
 }
 
