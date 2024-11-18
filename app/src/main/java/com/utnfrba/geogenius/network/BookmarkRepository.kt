@@ -47,4 +47,8 @@ object BookmarkRepository {
             bookmarks.filter { it.id.equals(id, ignoreCase = true) }[0]
         }
     }
+
+    fun getCachedBookmarks(): List<BookmarkDTO>? {
+        return this.cachedBookmarks
+    }
 }

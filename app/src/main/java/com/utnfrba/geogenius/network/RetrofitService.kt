@@ -9,8 +9,6 @@ import retrofit2.http.GET
 
 private const val BASE_URL =
     "http://192.168.0.17:3000"
-// https://run.mocky.io/v3/9302a605-a8fa-44e7-a948-2ae81b3e6657
-// utn && cd ../../rust/geogenius_rest_api/ && cargo run
 
 interface BookmarkApiService {
     @GET("/")

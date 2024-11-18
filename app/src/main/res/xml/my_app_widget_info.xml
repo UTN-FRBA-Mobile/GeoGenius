@@ -5,7 +5,7 @@
     android:updatePeriodMillis="86400000"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
-    android:targetCellWidth="2"
-    android:targetCellHeight="2"
+    android:targetCellWidth="3"
+    android:targetCellHeight="3"
     android:widgetFeatures="reconfigurable|configuration_optional">
 </appwidget-provider>

@@ -1,12 +1,15 @@
 package com.utnfrba.geogenius.screens.filters
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.datastore.preferences.core.Preferences
+import androidx.glance.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.utnfrba.geogenius.widget.GeoGeniusWidget
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
