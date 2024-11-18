@@ -1,5 +1,6 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +44,11 @@ import com.google.accompanist.pager.rememberPagerState
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
+fun BookmarkDetailScreen(
+    id: String?,
+    onReturnClick: () -> Unit,
+    isBookmarkSaved: Boolean
+) {
     val viewModel: BookmarkDetailViewModel = viewModel()
     val bookmark by viewModel.bookmark.collectAsState()
 
@@ -79,7 +86,7 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconButton(onClick = { navController.popBackStack() }) {
+                        IconButton(onClick = onReturnClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Volver"
@@ -142,6 +149,27 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = it.longDescription, style = MaterialTheme.typography.bodyLarge)
+                    var onClickAction: () -> Unit = {}
+                    var saveOrDeleteIcon: ImageVector = Icons.Filled.Star
+                    if (isBookmarkSaved) {
+                       onClickAction = {}
+                        saveOrDeleteIcon = Icons.Filled.Star
+                    } else {
+                        onClickAction = {}
+                        saveOrDeleteIcon = Icons.Filled.Star
+                    }
+                    FilledIconButton(
+                        modifier = Modifier
+                            .padding(start = 4.dp)
+                            .size(30.dp),
+                        onClick = onClickAction,
+                        content = {
+                            Icon(
+                                imageVector = saveOrDeleteIcon,
+                                contentDescription = ""
+                            )
+                        }
+                    )
                 }
             }
         }

@@ -18,6 +18,9 @@ class BookmarkViewModel : ViewModel() {
     private val _bookmarks = MutableStateFlow<List<BookmarkDTO>>(emptyList())
     val bookmarks: StateFlow<List<BookmarkDTO>> = _bookmarks
 
+    private val _savedBookmarks = MutableStateFlow<MutableList<BookmarkDTO>>(mutableListOf())
+    val savedBookmarks: StateFlow<MutableList<BookmarkDTO>> = _savedBookmarks
+
     init {
         viewModelScope.launch {
             _isLoading.value = true
@@ -30,5 +33,21 @@ class BookmarkViewModel : ViewModel() {
             }
             _isLoading.value = false
         }
+    }
+
+    fun addBookmark(bookmarkDTO: BookmarkDTO) {
+        viewModelScope.launch {
+            _savedBookmarks.value.add(bookmarkDTO)
+        }
+    }
+
+    fun deleteBookmark(bookmarkDTO: BookmarkDTO) {
+        viewModelScope.launch {
+            _savedBookmarks.value.removeAt(_savedBookmarks.value.indexOf(bookmarkDTO))
+        }
+    }
+
+    fun isSaved(bookmarkDTO: BookmarkDTO): Boolean {
+        return _savedBookmarks.value.any { it.id == bookmarkDTO.id }
     }
 }

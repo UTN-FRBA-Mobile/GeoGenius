@@ -1,4 +1,4 @@
-package com.utnfrba.geogenius.screens
+package com.utnfrba.geogenius.screens.bookmarkscreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,12 +18,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
-import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkCard
-import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
-    LoadingBookmarkComposable(bookmarkViewModel) {
+    LoadingBookmarkComposable(bookmarkViewModel, saved = true) {
         LazyColumn {
             items(it.value) { bookmark ->
                 BookmarkCard(
@@ -44,9 +42,14 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
 @Composable
 fun LoadingBookmarkComposable(
     bookmarkViewModel: BookmarkViewModel,
+    saved: Boolean,
     composable: @Composable (bookmarks: State<List<BookmarkDTO>>) -> Unit
 ) {
-    val bookmarks = bookmarkViewModel.bookmarks.collectAsState()
+    val bookmarks =
+        if (saved)
+            bookmarkViewModel.savedBookmarks.collectAsState()
+        else
+            bookmarkViewModel.bookmarks.collectAsState()
     val isLoading = bookmarkViewModel.isLoading.collectAsState()
     val errorMessage = bookmarkViewModel.errorMessage.collectAsState()
 
