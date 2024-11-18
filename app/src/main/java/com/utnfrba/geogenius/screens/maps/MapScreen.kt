@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
@@ -75,6 +76,7 @@ fun MapScreen(navController: NavController) {
     }
     LoadingBookmarkComposable(bookmarkViewModel) { b ->
         val bookmarks = b.value
+        var markers: List<Marker?> = listOf()
         Box {
             AndroidView({ mapView }) {
                 mapView.getMapAsync { googleMap: GoogleMap ->
@@ -101,9 +103,8 @@ fun MapScreen(navController: NavController) {
                         }
                     }
 
-                    addBookmarksToMap(googleMap, bookmarks
+                    markers = addBookmarksToMap(googleMap, bookmarks,
                     ) { marker ->
-                        marker.showInfoWindow()
                         val markerLocation = marker.position
                         val bookmark = bookmarks.find { b ->
                             b.coordinates.x == markerLocation.latitude && b.coordinates.y == markerLocation.longitude
@@ -115,11 +116,12 @@ fun MapScreen(navController: NavController) {
                     }
                 }
             }
-            // old: { id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") }
+
             SearchBarComponent(
                 bookmarks,
                 { id: String ->
                     val bookmark = bookmarks.find { b -> b.id == id }
+                    val bookmarkIndex = bookmarks.indexOf(bookmark)
                     if (bookmark != null) {
                         gMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
@@ -127,6 +129,7 @@ fun MapScreen(navController: NavController) {
                                 15f
                             )
                         )
+                        markers[bookmarkIndex]?.showInfoWindow()
                     }
                 })
         }
@@ -134,15 +137,19 @@ fun MapScreen(navController: NavController) {
 }
 
 
-private fun addBookmarksToMap(googleMap: GoogleMap, bookmarks: List<BookmarkDTO>, onMarkerClick: GoogleMap.OnMarkerClickListener) {
-    for (bookmark in bookmarks) {
+private fun addBookmarksToMap(
+    googleMap: GoogleMap,
+    bookmarks: List<BookmarkDTO>,
+    onMarkerClick: GoogleMap.OnMarkerClickListener): List<Marker?> {
+    val markers = bookmarks.map { bookmark ->
         val position = LatLng(bookmark.coordinates.x, bookmark.coordinates.y)
         val markerOptions = MarkerOptions()
             .position(position)
             .title(bookmark.name)
         googleMap.addMarker(markerOptions)
-        googleMap.setOnMarkerClickListener(onMarkerClick)
     }
+    googleMap.setOnMarkerClickListener(onMarkerClick)
+    return markers
 }
 
 
