@@ -51,8 +51,6 @@ class FilterDataStore(
             FilterState(cafeChecked, museumChecked, parkChecked, widgetCount)
         }
     }
-    // https://github.com/android/codelab-android-datastore/blob/preferences_datastore/app/src/main/java/com/codelab/android/datastore/data/UserPreferencesRepository.kt
-    // https://medium.com/@rowaido.game/persistent-data-storage-using-datastore-preferences-in-jetpack-compose-90c481bfed12
 }
 
 

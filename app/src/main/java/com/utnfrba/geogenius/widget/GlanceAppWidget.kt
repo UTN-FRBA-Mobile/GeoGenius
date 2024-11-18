@@ -42,7 +42,6 @@ import com.utnfrba.geogenius.screens.filters.DATASTORE_NAME
 import com.utnfrba.geogenius.screens.filters.PreferencesKeys
 import java.io.File
 import kotlin.math.min
-import kotlin.math.roundToInt
 
 class GlanceAppWidget : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = GeoGeniusWidget()
@@ -57,11 +56,12 @@ class GeoGeniusWidget : GlanceAppWidget() {
         provideContent {
             val prefs = currentState<Preferences>()
             val widgetCount = remember { prefs[PreferencesKeys.WIDGET_COUNT] ?: 1 }
-            val currentDirection = Coordinate(x = -34.63425283577223, y = -58.44339997962344)  // TODO get from phone
+            val currentDirection = WidgetViewModel.getCachedLocation()
+            println(currentDirection)
             Content(
                 getSortedBookmarks(currentDirection),
                 widgetCount,
-                { WidgetViewModel().updateWidget(context, id) },
+                { WidgetViewModel.updateWidget(context, id) },
                 currentDirection
             )
         }
@@ -119,7 +119,7 @@ private fun CardRow(
     val kms = distanceInKmBetweenEarthCoordinates(bookmark.coordinates, currentDirection)
     val arrowDirection = getDirectionToReach(bookmark.coordinates, currentDirection).icon
     FilledButton(
-        text = kms.roundToInt().toString() + " km: " + bookmark.name,
+        text =  "${round(kms, 1)} km: ${bookmark.name}",
         onClick = actionStartActivity(
             Intent(LocalContext.current.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
@@ -143,4 +143,6 @@ object CustomGlanceStateDefinition : GlanceStateDefinition<Preferences> {
 
 private val Context.dataStore: DataStore<Preferences>
         by preferencesDataStore(name = DATASTORE_NAME)
+
+
 

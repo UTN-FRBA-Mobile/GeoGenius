@@ -46,3 +46,9 @@ fun getDirectionToReach(destination: Coordinate, origin: Coordinate): ArrowDirec
         if (xDifference > 0) ArrowDirection.RIGHT else ArrowDirection.LEFT
     }
 }
+
+fun round(number: Double, decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return kotlin.math.round(number * multiplier) / multiplier
+}
