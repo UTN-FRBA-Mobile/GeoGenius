@@ -105,10 +105,10 @@ fun MapScreen(navController: NavController) {
                             )
                         }
                     }
-
-                    markers = addBookmarksToMap(
+                    markers = createMarkersFromBookmarks(
                         googleMap, bookmarks,
-                    ) { marker ->
+                    )
+                    googleMap.setOnMarkerClickListener{ marker ->
                         val markerLocation = marker.position
                         val bookmark = bookmarks.find { b ->
                             b.coordinates.x == markerLocation.latitude && b.coordinates.y == markerLocation.longitude
@@ -141,20 +141,17 @@ fun MapScreen(navController: NavController) {
 }
 
 
-private fun addBookmarksToMap(
+private fun createMarkersFromBookmarks(
     googleMap: GoogleMap,
-    bookmarks: List<BookmarkDTO>,
-    onMarkerClick: GoogleMap.OnMarkerClickListener
+    bookmarks: List<BookmarkDTO>
 ): List<Marker?> {
-    val markers = bookmarks.map { bookmark ->
+    return bookmarks.map { bookmark ->
         val position = LatLng(bookmark.coordinates.x, bookmark.coordinates.y)
         val markerOptions = MarkerOptions()
             .position(position)
             .title(bookmark.name)
         googleMap.addMarker(markerOptions)
     }
-    googleMap.setOnMarkerClickListener(onMarkerClick)
-    return markers
 }
 
 
