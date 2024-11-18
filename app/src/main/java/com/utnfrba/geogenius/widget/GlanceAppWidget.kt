@@ -69,7 +69,12 @@ class GeoGeniusWidget : GlanceAppWidget() {
 
     private fun getSortedBookmarks(currentDirection: Coordinate): List<BookmarkDTO> {
         val list: List<BookmarkDTO> = BookmarkRepository.getCachedBookmarks() ?: listOf()
-        return list.sortedBy { b -> distanceInKmBetweenEarthCoordinates(b.coordinates, currentDirection)}
+        return list.sortedBy { b ->
+            distanceInKmBetweenEarthCoordinates(
+                b.coordinates,
+                currentDirection
+            )
+        }
     }
 
     @Composable
@@ -119,7 +124,7 @@ private fun CardRow(
     val kms = distanceInKmBetweenEarthCoordinates(bookmark.coordinates, currentDirection)
     val arrowDirection = getDirectionToReach(bookmark.coordinates, currentDirection).icon
     FilledButton(
-        text =  "${round(kms, 1)} km: ${bookmark.name}",
+        text = "${round(kms, 1)} km: ${bookmark.name}",
         onClick = actionStartActivity(
             Intent(LocalContext.current.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)

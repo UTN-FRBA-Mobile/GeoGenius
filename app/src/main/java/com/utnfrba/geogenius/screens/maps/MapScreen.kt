@@ -99,11 +99,15 @@ fun MapScreen(navController: NavController) {
                                 )
                             }
                         }.addOnFailureListener {
-                            Log.e("MapScreen", "Error al intentar obtener la ubicación: ${it.message}")
+                            Log.e(
+                                "MapScreen",
+                                "Error al intentar obtener la ubicación: ${it.message}"
+                            )
                         }
                     }
 
-                    markers = addBookmarksToMap(googleMap, bookmarks,
+                    markers = addBookmarksToMap(
+                        googleMap, bookmarks,
                     ) { marker ->
                         val markerLocation = marker.position
                         val bookmark = bookmarks.find { b ->
@@ -140,7 +144,8 @@ fun MapScreen(navController: NavController) {
 private fun addBookmarksToMap(
     googleMap: GoogleMap,
     bookmarks: List<BookmarkDTO>,
-    onMarkerClick: GoogleMap.OnMarkerClickListener): List<Marker?> {
+    onMarkerClick: GoogleMap.OnMarkerClickListener
+): List<Marker?> {
     val markers = bookmarks.map { bookmark ->
         val position = LatLng(bookmark.coordinates.x, bookmark.coordinates.y)
         val markerOptions = MarkerOptions()

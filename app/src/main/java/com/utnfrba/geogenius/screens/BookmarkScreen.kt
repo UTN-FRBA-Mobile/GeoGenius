@@ -42,7 +42,10 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
 }
 
 @Composable
-fun LoadingBookmarkComposable(bookmarkViewModel: BookmarkViewModel, composable: @Composable (bookmarks: State<List<BookmarkDTO>>) -> Unit ) {
+fun LoadingBookmarkComposable(
+    bookmarkViewModel: BookmarkViewModel,
+    composable: @Composable (bookmarks: State<List<BookmarkDTO>>) -> Unit
+) {
     val bookmarks = bookmarkViewModel.bookmarks.collectAsState()
     val isLoading = bookmarkViewModel.isLoading.collectAsState()
     val errorMessage = bookmarkViewModel.errorMessage.collectAsState()
