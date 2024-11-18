@@ -8,7 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 
 const val DATASTORE_NAME = "setting"
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = DATASTORE_NAME
 )
 

@@ -15,12 +15,11 @@ private fun degreesToRadians(degrees: Double): Double {
 // Uses http://en.wikipedia.org/wiki/Haversine_formula
 fun distanceInKmBetweenEarthCoordinates(c1: Coordinate, c2: Coordinate): Double {
     val earthRadiusKm = 6371.0
-    println("$c1 $c2")
-    val dLat = degreesToRadians(c2.latitude - c1.latitude)
-    val dLon = degreesToRadians(c2.longitude - c1.longitude)
+    val dLat = degreesToRadians(c2.longitude - c1.longitude)
+    val dLon = degreesToRadians(c2.latitude - c1.latitude)
 
-    val lat1Rad = degreesToRadians(c1.latitude)
-    val lat2Rad = degreesToRadians(c2.latitude)
+    val lat1Rad = degreesToRadians(c1.longitude)
+    val lat2Rad = degreesToRadians(c2.longitude)
 
     val a = sin(dLat / 2) * sin(dLat / 2) +
             sin(dLon / 2) * sin(dLon / 2) * cos(lat1Rad) * cos(lat2Rad)
@@ -37,8 +36,8 @@ enum class ArrowDirection(val icon: Int) {
 }
 
 fun getDirectionToReach(destination: Coordinate, origin: Coordinate): ArrowDirection {
-    val xDifference = destination.longitude - origin.longitude
-    val yDifference = destination.latitude - origin.latitude
+    val xDifference = destination.latitude - origin.latitude
+    val yDifference = destination.longitude - origin.longitude
 
     return if (xDifference.absoluteValue > yDifference.absoluteValue) {
         if (yDifference > 0) ArrowDirection.UP else ArrowDirection.DOWN

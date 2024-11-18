@@ -42,6 +42,7 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 import com.utnfrba.geogenius.screens.filters.DATASTORE_NAME
 import com.utnfrba.geogenius.screens.filters.PreferencesKeys
+import com.utnfrba.geogenius.screens.filters.dataStore
 import java.io.File
 import kotlin.math.min
 
@@ -58,8 +59,8 @@ class GeoGeniusWidget : GlanceAppWidget() {
         provideContent {
             val prefs = currentState<Preferences>()
             val widgetCount = remember { prefs[PreferencesKeys.WIDGET_COUNT] ?: 1 }
+            WidgetViewModel.updateLocation(context, id)
             val currentDirection = WidgetViewModel.getCachedLocation()
-            println(currentDirection)
             Content(
                 getSortedBookmarks(currentDirection),
                 widgetCount,
@@ -107,7 +108,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                 }
             }
         ) {
-            if (currentDirection.longitude == 0.0 && currentDirection.latitude == 0.0) {
+            if (currentDirection.latitude == 0.0 && currentDirection.longitude == 0.0) {
                 Text("Could not get location", style = TextStyle(color = ColorProvider(Color.White)))
             } else {
                 Column(modifier = GlanceModifier.padding(5.dp)) {
@@ -151,10 +152,6 @@ object CustomGlanceStateDefinition : GlanceStateDefinition<Preferences> {
         return File(context.applicationContext.filesDir, "datastore/$DATASTORE_NAME")
     }
 }
-
-private val Context.dataStore: DataStore<Preferences>
-        by preferencesDataStore(name = DATASTORE_NAME)
-
 
 fun formatDistance(kms: Double): String {
    return if (kms >= 1) {
