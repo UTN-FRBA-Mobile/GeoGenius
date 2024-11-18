@@ -103,13 +103,14 @@ fun BookmarkCard(
 @Composable
 fun PlaceCardPreview() {
     BookmarkCard(
-        BookmarkDTO("1",
+        BookmarkDTO(
+            "1",
             "Foo",
             "bar",
             "Bar de tragos",
             "123",
             3.4, listOf(),
-            Coordinate(1.0,1.0),
+            Coordinate(1.0, 1.0),
             "cafe"
         ),
         modifier = Modifier,

@@ -108,7 +108,7 @@ fun MapScreen(navController: NavController) {
                     markers = createMarkersFromBookmarks(
                         googleMap, bookmarks,
                     )
-                    googleMap.setOnMarkerClickListener{ marker ->
+                    googleMap.setOnMarkerClickListener { marker ->
                         val markerLocation = marker.position
                         val bookmark = bookmarks.find { b ->
                             b.coordinates.latitude == markerLocation.latitude && b.coordinates.longitude == markerLocation.longitude
@@ -129,7 +129,10 @@ fun MapScreen(navController: NavController) {
                     if (bookmark != null) {
                         gMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
-                                LatLng(bookmark.coordinates.latitude, bookmark.coordinates.longitude),
+                                LatLng(
+                                    bookmark.coordinates.latitude,
+                                    bookmark.coordinates.longitude
+                                ),
                                 15f
                             )
                         )

@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -109,7 +108,10 @@ class GeoGeniusWidget : GlanceAppWidget() {
             }
         ) {
             if (currentDirection.latitude == 0.0 && currentDirection.longitude == 0.0) {
-                Text("Could not get location", style = TextStyle(color = ColorProvider(Color.White)))
+                Text(
+                    "Could not get location",
+                    style = TextStyle(color = ColorProvider(Color.White))
+                )
             } else {
                 Column(modifier = GlanceModifier.padding(5.dp)) {
                     bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
@@ -154,9 +156,9 @@ object CustomGlanceStateDefinition : GlanceStateDefinition<Preferences> {
 }
 
 fun formatDistance(kms: Double): String {
-   return if (kms >= 1) {
-       "${round(kms, 1)} km"
-   } else {
-       "${(kms * 1000).toInt()} m"
-   }
+    return if (kms >= 1) {
+        "${round(kms, 1)} km"
+    } else {
+        "${(kms * 1000).toInt()} m"
+    }
 }

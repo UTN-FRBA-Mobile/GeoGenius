@@ -35,7 +35,8 @@ object WidgetViewModel : ViewModel() {
                 break
         }
         if (location != null) {
-            cachedLocation = Coordinate(latitude = location.latitude, longitude = location.longitude)
+            cachedLocation =
+                Coordinate(latitude = location.latitude, longitude = location.longitude)
         }
     }
 }
