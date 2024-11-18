@@ -35,7 +35,8 @@ object WidgetViewModel : ViewModel() {
                 break
         }
         if (location != null) {
-            cachedLocation = Coordinate(x = location.latitude, y = location.longitude)
+            // This is not a bug: google maps parses x and y axis as y and x for some reason
+            cachedLocation = Coordinate(longitude = location.latitude, latitude = location.longitude)
         }
     }
 }

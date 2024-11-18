@@ -32,6 +32,8 @@ import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
@@ -105,10 +107,14 @@ class GeoGeniusWidget : GlanceAppWidget() {
                 }
             }
         ) {
-            Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
-                    CardRow(b, currentDirection)
-                    Spacer(modifier = GlanceModifier.padding(5.dp))
+            if (currentDirection.longitude == 0.0 && currentDirection.latitude == 0.0) {
+                Text("Could not get location", style = TextStyle(color = ColorProvider(Color.White)))
+            } else {
+                Column(modifier = GlanceModifier.padding(5.dp)) {
+                    bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
+                        CardRow(b, currentDirection)
+                        Spacer(modifier = GlanceModifier.padding(5.dp))
+                    }
                 }
             }
         }
@@ -124,7 +130,7 @@ private fun CardRow(
     val kms = distanceInKmBetweenEarthCoordinates(bookmark.coordinates, currentDirection)
     val arrowDirection = getDirectionToReach(bookmark.coordinates, currentDirection).icon
     FilledButton(
-        text = "${round(kms, 1)} km: ${bookmark.name}",
+        text = "${formatDistance(kms)}: ${bookmark.name}",
         onClick = actionStartActivity(
             Intent(LocalContext.current.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
@@ -150,4 +156,10 @@ private val Context.dataStore: DataStore<Preferences>
         by preferencesDataStore(name = DATASTORE_NAME)
 
 
-
+fun formatDistance(kms: Double): String {
+   return if (kms >= 1) {
+       "${round(kms, 1)} km"
+   } else {
+       "${(kms * 1000).toInt()} m"
+   }
+}

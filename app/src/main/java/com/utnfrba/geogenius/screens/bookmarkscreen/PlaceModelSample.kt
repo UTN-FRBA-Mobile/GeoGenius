@@ -15,7 +15,7 @@ val samplePlace = BookmarkDTO(
         "https://via.placeholder.com/400x200/33FF57/FFFFFF?text=Imagen+2",
         "https://via.placeholder.com/400x200/3357FF/FFFFFF?text=Imagen+3"
     ),
-    coordinates = Coordinate(x = 10.0, y = 20.0),
+    coordinates = Coordinate(longitude = 10.0, latitude = 20.0),
     type = "Casa",
 )
 val samplePlace2 = BookmarkDTO(
@@ -30,7 +30,7 @@ val samplePlace2 = BookmarkDTO(
         "https://via.placeholder.com/400x200/33FF57/FFFFFF?text=Imagen+2",
         "https://via.placeholder.com/400x200/3357FF/FFFFFF?text=Imagen+3"
     ),
-    coordinates = Coordinate(x = 10.0, y = 20.0),
+    coordinates = Coordinate(longitude = 10.0, latitude = 20.0),
     type = "Casa",
 )
 val sampleList = listOf(samplePlace, samplePlace2)
