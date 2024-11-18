@@ -1,11 +1,9 @@
 package com.utnfrba.geogenius.widget
 
 import BookmarkRepository
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -19,7 +17,6 @@ import androidx.glance.GlanceTheme
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.components.FilledButton
@@ -34,7 +31,6 @@ import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
-import androidx.glance.layout.width
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.unit.ColorProvider
 import com.utnfrba.geogenius.MainActivity
@@ -44,25 +40,12 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 import com.utnfrba.geogenius.screens.filters.DATASTORE_NAME
 import com.utnfrba.geogenius.screens.filters.PreferencesKeys
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-var cachedWidgetData: List<BookmarkDTO> = listOf()
-
 class GlanceAppWidget : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = GeoGeniusWidget()
-
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        cachedWidgetData = BookmarkRepository.getCachedBookmarks() ?: listOf()
-        super.onUpdate(context, appWidgetManager, appWidgetIds)
-    }
 }
 
 class GeoGeniusWidget : GlanceAppWidget() {
@@ -74,15 +57,19 @@ class GeoGeniusWidget : GlanceAppWidget() {
         provideContent {
             val prefs = currentState<Preferences>()
             val widgetCount = remember { prefs[PreferencesKeys.WIDGET_COUNT] ?: 1 }
-            val cachedWidgetData = BookmarkRepository.getCachedBookmarks() ?: listOf()
-            println(cachedWidgetData)
-            // https://developer.android.com/develop/ui/compose/glance/glance-app-widget
+            val currentDirection = Coordinate(x = -34.63425283577223, y = -58.44339997962344)  // TODO get from phone
             Content(
-                cachedWidgetData, widgetCount, {
-                    WidgetViewModel().setBookmarkCount(context, id)
-                }
+                getSortedBookmarks(currentDirection),
+                widgetCount,
+                { WidgetViewModel().updateWidget(context, id) },
+                currentDirection
             )
         }
+    }
+
+    private fun getSortedBookmarks(currentDirection: Coordinate): List<BookmarkDTO> {
+        val list: List<BookmarkDTO> = BookmarkRepository.getCachedBookmarks() ?: listOf()
+        return list.sortedBy { b -> distanceInKmBetweenEarthCoordinates(b.coordinates, currentDirection)}
     }
 
     @Composable
@@ -90,6 +77,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
         bookmarks: List<BookmarkDTO>,
         widgetCount: Int,
         onClick: () -> Unit,
+        currentDirection: Coordinate,
         modifier: GlanceModifier = GlanceModifier
     ) {
         Scaffold(
@@ -102,7 +90,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                         contentColor = ColorProvider(Color.Transparent),
                         onClick = onClick,
                         icon = ImageProvider(R.drawable.baseline_refresh_24),
-                        modifier = GlanceModifier.background(Color.Transparent)
+                        modifier = GlanceModifier.background(Color.Transparent),
                     )
                     TitleBar(
                         startIcon = ImageProvider(R.drawable.baseline_bookmark_24),
@@ -112,10 +100,9 @@ class GeoGeniusWidget : GlanceAppWidget() {
                 }
             }
         ) {
-            // Button to update?
             Column(modifier = GlanceModifier.padding(5.dp)) {
                 bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
-                    CardRow(b)
+                    CardRow(b, currentDirection)
                     Spacer(modifier = GlanceModifier.padding(5.dp))
                 }
             }
@@ -124,15 +111,17 @@ class GeoGeniusWidget : GlanceAppWidget() {
 }
 
 @Composable
-private fun CardRow(bookmark: BookmarkDTO, modifier: GlanceModifier = GlanceModifier) {
-    val kms = (Math.random() * 200).roundToInt()
-    val currentDirection = Coordinate(x = -34.0, y = -53.0) // TODO get from phone
+private fun CardRow(
+    bookmark: BookmarkDTO,
+    currentDirection: Coordinate,
+    modifier: GlanceModifier = GlanceModifier
+) {
+    val kms = distanceInKmBetweenEarthCoordinates(bookmark.coordinates, currentDirection)
     val arrowDirection = getDirectionToReach(bookmark.coordinates, currentDirection).icon
-    val context = LocalContext.current
     FilledButton(
-        text = kms.toString() + " km " + bookmark.name,
+        text = kms.roundToInt().toString() + " km: " + bookmark.name,
         onClick = actionStartActivity(
-            Intent(context.applicationContext, MainActivity::class.java)
+            Intent(LocalContext.current.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .setData(("https://geogenius.utnfrba.com/" + Screen.BookmarkDetail.route + "?placeId=" + bookmark.id).toUri()),
