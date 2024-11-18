@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.okhttp)
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.datastore.preferences)
 }
 
 secrets {

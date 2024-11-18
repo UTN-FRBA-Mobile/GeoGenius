@@ -11,40 +11,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.utnfrba.geogenius.appnavigation.Screen
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(onClick: (route: String) -> Unit) {
     var selectedItem by remember { mutableIntStateOf(1) }
-    val currentRoute = currentRoute(navController)
 
-    if (currentRoute != Screen.BookmarkDetail.route) {
-        NavigationBar {
-            BottomNavigationBarItem().getBottomNavigationItems().forEachIndexed { index, item ->
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            if (selectedItem == index) item.filledIcon else item.outlinedIcon,
-                            contentDescription = item.label
-                        )
-                    },
-                    selected = selectedItem == index,
-                    onClick = {
-                        selectedItem = index
-                        if (navController.currentDestination?.route != item.route) {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    },
-                    label = { Text(item.label) }
-                )
-            }
+
+    NavigationBar {
+        BottomNavigationBarItem().getBottomNavigationItems().forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        if (selectedItem == index) item.filledIcon else item.outlinedIcon,
+                        contentDescription = item.label
+                    )
+                },
+                selected = selectedItem == index,
+                onClick = {
+                    selectedItem = index
+                    onClick(item.route)
+                },
+                label = { Text(item.label) }
+            )
         }
     }
+
 }
 
 @Composable

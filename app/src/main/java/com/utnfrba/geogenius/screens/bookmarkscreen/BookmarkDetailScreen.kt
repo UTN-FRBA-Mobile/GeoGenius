@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
@@ -143,7 +141,7 @@ fun BookmarkDetailScreen(id: String?, navController: NavHostController) {
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = it.description, style = MaterialTheme.typography.bodyLarge)
+                    Text(text = it.longDescription, style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }

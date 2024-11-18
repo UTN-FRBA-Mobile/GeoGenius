@@ -7,21 +7,22 @@ object BookmarkRepository {
 
     private var cachedBookmarks: List<BookmarkDTO>? = null
     private var lastFetchTime: Long = 0
-    private val cacheExpiryTime = 6 * 1000 * 1000
+    private var cacheExpiryTime = 6 * 1000 * 1000
 
     suspend fun getBookmarks(): Result<List<BookmarkDTO>> {
         val currentTime = System.currentTimeMillis()
 
         if (cachedBookmarks == null || currentTime - lastFetchTime > cacheExpiryTime) {
             return try {
+                lastFetchTime = currentTime
+                cacheExpiryTime = 6 * 1000 * 1000
                 val bookmarksFromApi = withContext(Dispatchers.IO) {
                     BookmarkApi.retrofitService.getBookmarks()
                 }
-
                 cachedBookmarks = bookmarksFromApi
-                lastFetchTime = currentTime
                 Result.success(bookmarksFromApi)
             } catch (e: Exception) {
+                cacheExpiryTime = 10
                 Result.failure(e)
             }
         }
@@ -45,5 +46,9 @@ object BookmarkRepository {
         return getBookmarks().map { bookmarks ->
             bookmarks.filter { it.id.equals(id, ignoreCase = true) }[0]
         }
+    }
+
+    fun getCachedBookmarks(): List<BookmarkDTO>? {
+        return this.cachedBookmarks
     }
 }

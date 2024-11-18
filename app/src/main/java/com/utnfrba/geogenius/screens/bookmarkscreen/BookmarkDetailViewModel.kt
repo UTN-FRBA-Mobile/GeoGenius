@@ -20,7 +20,9 @@ class BookmarkDetailViewModel : ViewModel() {
             id?.let {
                 val result = BookmarkRepository.getBookmarksById(it)
                 if (result.isSuccess) {
-                    _bookmark.value = result.getOrNull()
+                    _bookmark.value = result.getOrElse { errorMessage ->
+                        throw Error(errorMessage)
+                    }
                 } else {
                     errorMessage =
                         "Error loading bookmark: ${result.exceptionOrNull()?.localizedMessage}"
