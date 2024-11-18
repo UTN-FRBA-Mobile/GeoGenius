@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.utnfrba.geogenius.model.BookmarkDTO
+import com.utnfrba.geogenius.model.Coordinate
 
 @Composable
 fun BookmarkCard(
@@ -102,7 +103,15 @@ fun BookmarkCard(
 @Composable
 fun PlaceCardPreview() {
     BookmarkCard(
-        samplePlace,
+        BookmarkDTO("1",
+            "Foo",
+            "bar",
+            "Bar de tragos",
+            "123",
+            3.4, listOf(),
+            Coordinate(1.0,1.0),
+            "cafe"
+        ),
         modifier = Modifier,
         onClick = {}
     )

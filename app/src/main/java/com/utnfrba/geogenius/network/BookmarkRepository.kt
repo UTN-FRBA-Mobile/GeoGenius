@@ -7,7 +7,7 @@ object BookmarkRepository {
 
     private var cachedBookmarks: List<BookmarkDTO>? = null
     private var lastFetchTime: Long = 0
-    private var cacheExpiryTime = 6 * 1000 * 1000
+    private var cacheExpiryTime = 6 * 1000 * 10
 
     suspend fun getBookmarks(): Result<List<BookmarkDTO>> {
         val currentTime = System.currentTimeMillis()
@@ -22,7 +22,7 @@ object BookmarkRepository {
                 cachedBookmarks = bookmarksFromApi
                 Result.success(bookmarksFromApi)
             } catch (e: Exception) {
-                cacheExpiryTime = 10
+                cacheExpiryTime = 5 * 1000
                 Result.failure(e)
             }
         }

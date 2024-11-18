@@ -12,7 +12,9 @@ private fun degreesToRadians(degrees: Double): Double {
     return degrees * Math.PI / 180
 }
 
-// Uses http://en.wikipedia.org/wiki/Haversine_formula
+/**
+ * Uses Haversine formula
+ */
 fun distanceInKmBetweenEarthCoordinates(c1: Coordinate, c2: Coordinate): Double {
     val earthRadiusKm = 6371.0
     val dLat = degreesToRadians(c2.longitude - c1.longitude)

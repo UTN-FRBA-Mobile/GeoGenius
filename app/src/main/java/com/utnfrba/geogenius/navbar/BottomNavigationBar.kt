@@ -9,13 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavigationBar(onClick: (route: String) -> Unit) {
     var selectedItem by remember { mutableIntStateOf(1) }
-
 
     NavigationBar {
         BottomNavigationBarItem().getBottomNavigationItems().forEachIndexed { index, item ->
@@ -36,10 +33,4 @@ fun BottomNavigationBar(onClick: (route: String) -> Unit) {
         }
     }
 
-}
-
-@Composable
-fun currentRoute(navController: NavHostController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route
 }
