@@ -3,6 +3,9 @@ package com.utnfrba.geogenius.screens.bookmarkscreen
 import BookmarkRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.utnfrba.geogenius.database.DB
+import com.utnfrba.geogenius.database.DTOToBookmark
+import com.utnfrba.geogenius.database.bookmarkToDTO
 import com.utnfrba.geogenius.model.BookmarkDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +21,8 @@ class BookmarkViewModel : ViewModel() {
     private val _bookmarks = MutableStateFlow<List<BookmarkDTO>>(emptyList())
     val bookmarks: StateFlow<List<BookmarkDTO>> = _bookmarks
 
-    private val _savedBookmarks = MutableStateFlow<MutableList<BookmarkDTO>>(mutableListOf())
-    val savedBookmarks: StateFlow<MutableList<BookmarkDTO>> = _savedBookmarks
+    private val _savedBookmarks = MutableStateFlow<List<BookmarkDTO>>(mutableListOf())
+    val savedBookmarks: StateFlow<List<BookmarkDTO>> = _savedBookmarks
 
     init {
         viewModelScope.launch {
@@ -31,23 +34,30 @@ class BookmarkViewModel : ViewModel() {
                 _errorMessage.value =
                     "Error loading bookmarks: ${result.exceptionOrNull()?.localizedMessage}"
             }
+            refreshDataFromDB()
             _isLoading.value = false
         }
     }
 
     fun addBookmark(bookmarkDTO: BookmarkDTO) {
         viewModelScope.launch {
-            _savedBookmarks.value.add(bookmarkDTO)
+            DB.getDB().add(DTOToBookmark(bookmarkDTO))
+            _savedBookmarks.value = DB.getDB().getAll().map { bookmarkToDTO(it) }
         }
     }
 
     fun deleteBookmark(bookmarkDTO: BookmarkDTO) {
         viewModelScope.launch {
-            _savedBookmarks.value.removeAt(_savedBookmarks.value.indexOf(bookmarkDTO))
+            DB.getDB().delete(DTOToBookmark(bookmarkDTO))
+            refreshDataFromDB()
         }
     }
 
     fun isSaved(id: String): Boolean {
         return _savedBookmarks.value.any { it.id == id }
+    }
+
+    private fun refreshDataFromDB(){
+        _savedBookmarks.value = DB.getDB().getAll().map { bookmarkToDTO(it) }
     }
 }

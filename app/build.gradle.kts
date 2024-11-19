@@ -94,6 +94,8 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.room.runtime)
 }
 
 secrets {

@@ -12,12 +12,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.utnfrba.geogenius.appnavigation.GeoGeniusNavGraph
 import com.utnfrba.geogenius.appnavigation.Screen
+import com.utnfrba.geogenius.database.DB
 import com.utnfrba.geogenius.navbar.BottomNavigationBar
 import com.utnfrba.geogenius.ui.theme.GeoGeniusTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DB.buildDB(this)
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
