@@ -12,17 +12,17 @@ abstract class AppDatabase : RoomDatabase() {
 
 object DB {
 
-    private lateinit var db: AppDatabase
+    private lateinit var instance: AppDatabase
 
     fun buildDB(context: Context){
-        db = Room.databaseBuilder(
+        instance = Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             "geogenius-db"
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
-    fun getDB(): BookmarkDAO{
-        return db.bookmarkDao()
+    fun getInstance(): AppDatabase {
+        return instance
     }
 }

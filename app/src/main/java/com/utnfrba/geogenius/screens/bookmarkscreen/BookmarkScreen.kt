@@ -1,9 +1,14 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.appnavigation.Screen
@@ -21,19 +27,27 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
-    LoadingBookmarkComposable(bookmarkViewModel, saved = true) {
-        LazyColumn {
-            items(it.value) { bookmark ->
-                BookmarkCard(
-                    bookmark,
-                    modifier = Modifier,
-                    onClick = {
-                        navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+    Column {
+        Text("My bookmarks") // TODO make it prettier
+        Spacer(modifier = Modifier.padding(5.dp))
+        LoadingBookmarkComposable(bookmarkViewModel, saved = true) {
+            if (it.value.isNotEmpty()) {
+                LazyColumn {
+                    items(it.value) { bookmark ->
+                        BookmarkCard(
+                            bookmark,
+                            modifier = Modifier,
+                            onClick = {
+                                navController.navigate(Screen.BookmarkDetail.withArgs(bookmark.id)) {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        )
                     }
-                )
+                }
+            } else {
+                Text("You don't have any bookmarks")
             }
         }
     }

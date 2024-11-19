@@ -41,14 +41,14 @@ class BookmarkViewModel : ViewModel() {
 
     fun addBookmark(bookmarkDTO: BookmarkDTO) {
         viewModelScope.launch {
-            DB.getDB().add(DTOToBookmark(bookmarkDTO))
-            _savedBookmarks.value = DB.getDB().getAll().map { bookmarkToDTO(it) }
+            DB.getInstance().bookmarkDao().add(DTOToBookmark(bookmarkDTO))
+            refreshDataFromDB()
         }
     }
 
     fun deleteBookmark(bookmarkDTO: BookmarkDTO) {
         viewModelScope.launch {
-            DB.getDB().delete(DTOToBookmark(bookmarkDTO))
+            DB.getInstance().bookmarkDao().delete(DTOToBookmark(bookmarkDTO))
             refreshDataFromDB()
         }
     }
@@ -58,6 +58,7 @@ class BookmarkViewModel : ViewModel() {
     }
 
     private fun refreshDataFromDB(){
-        _savedBookmarks.value = DB.getDB().getAll().map { bookmarkToDTO(it) }
+        val dbRes = DB.getInstance().bookmarkDao().getAll()
+        _savedBookmarks.value = dbRes.map { bookmarkToDTO(it) }
     }
 }
