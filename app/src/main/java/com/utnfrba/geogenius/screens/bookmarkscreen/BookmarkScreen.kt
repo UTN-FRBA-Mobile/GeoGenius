@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,11 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.TopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -59,7 +56,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
                 }
             } else {
                 Text(
-                    text="You don't have any bookmarks!",
+                    text = "You don't have any bookmarks!",
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                 )
             }

@@ -21,20 +21,22 @@ data class Bookmark(
     @ColumnInfo(name = "latitude") val latitude: Double,
     @ColumnInfo(name = "longitude") val longitude: Double,
 
-    @ColumnInfo(name = "image") val image: String // Store this as a comma-separated String or use TypeConverter
+    // We store the first image only for practical purposes
+    @ColumnInfo(name = "image") val image: String
 )
 
 fun bookmarkToDTO(b: Bookmark): BookmarkDTO {
     return BookmarkDTO(
-        b.id,b.name,b.description,
-        b.longDescription,b.address,b.rating,
+        b.id, b.name, b.description,
+        b.longDescription, b.address, b.rating,
         listOf(b.image),
-        Coordinate(b.latitude,b.longitude),b.type
+        Coordinate(b.latitude, b.longitude), b.type
     )
 }
 
-fun DTOToBookmark(b: BookmarkDTO): Bookmark{
-    return Bookmark(b.id, b.name, b.description,
+fun dtoToBookmark(b: BookmarkDTO): Bookmark {
+    return Bookmark(
+        b.id, b.name, b.description,
         b.longDescription, b.address, b.rating,
         b.type, b.coordinates.latitude, b.coordinates.longitude,
         b.images[0]

@@ -14,7 +14,7 @@ object DB {
 
     private lateinit var instance: AppDatabase
 
-    fun buildDB(context: Context){
+    fun buildDB(context: Context) {
         instance = Room.databaseBuilder(
             context,
             AppDatabase::class.java,

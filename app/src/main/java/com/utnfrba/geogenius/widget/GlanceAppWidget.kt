@@ -101,7 +101,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                     )
                     TitleBar(
                         startIcon = ImageProvider(R.drawable.baseline_bookmark_24),
-                        title = "My bookmarks",
+                        title = "Places near you",
                         textColor = GlanceTheme.colors.onSurface,
                     )
                 }

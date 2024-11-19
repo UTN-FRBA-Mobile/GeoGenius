@@ -2,6 +2,7 @@ package com.utnfrba.geogenius
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import androidx.loader.content.AsyncTaskLoader
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.utnfrba.geogenius.appnavigation.GeoGeniusNavGraph
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         val con: Context = this
         lifecycleScope.launch {
             DB.buildDB(con)
-            println("DB built")
+            Log.i("db", "DB built")
         }.start()
         setContent {
             val navController = rememberNavController()

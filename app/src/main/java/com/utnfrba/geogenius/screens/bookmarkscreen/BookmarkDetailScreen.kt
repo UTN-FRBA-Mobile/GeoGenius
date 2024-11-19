@@ -1,6 +1,5 @@
 package com.utnfrba.geogenius.screens.bookmarkscreen
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,19 +28,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -57,7 +52,7 @@ fun BookmarkDetailScreen(
 ) {
     val viewModel: BookmarkDetailViewModel = viewModel()
     val bookmark by viewModel.bookmark.collectAsState()
-    var saveOrDeleteIcon by remember{mutableStateOf(Icons.Filled.Add)}
+    var saveOrDeleteIcon by remember { mutableStateOf(Icons.Filled.Add) }
 
     LaunchedEffect(id) {
         if (id != "" && bookmark == null) {
@@ -159,10 +154,10 @@ fun BookmarkDetailScreen(
                     Text(text = it.longDescription, style = MaterialTheme.typography.bodyLarge)
                     val onClickAction: () -> Unit
                     if (bookmarkViewModel.isSaved(id)) {
-                       onClickAction = {
-                           bookmarkViewModel.deleteBookmark(it)
-                           saveOrDeleteIcon = Icons.Filled.Add
-                       }
+                        onClickAction = {
+                            bookmarkViewModel.deleteBookmark(it)
+                            saveOrDeleteIcon = Icons.Filled.Add
+                        }
                         saveOrDeleteIcon = Icons.Filled.Delete
                     } else {
                         onClickAction = {

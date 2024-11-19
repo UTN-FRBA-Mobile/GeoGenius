@@ -4,7 +4,7 @@ import BookmarkRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.utnfrba.geogenius.database.DB
-import com.utnfrba.geogenius.database.DTOToBookmark
+import com.utnfrba.geogenius.database.dtoToBookmark
 import com.utnfrba.geogenius.database.bookmarkToDTO
 import com.utnfrba.geogenius.model.BookmarkDTO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,14 +41,14 @@ class BookmarkViewModel : ViewModel() {
 
     fun addBookmark(bookmarkDTO: BookmarkDTO) {
         viewModelScope.launch {
-            DB.getInstance().bookmarkDao().add(DTOToBookmark(bookmarkDTO))
+            DB.getInstance().bookmarkDao().add(dtoToBookmark(bookmarkDTO))
             refreshDataFromDB()
         }
     }
 
     fun deleteBookmark(bookmarkDTO: BookmarkDTO) {
         viewModelScope.launch {
-            DB.getInstance().bookmarkDao().delete(DTOToBookmark(bookmarkDTO))
+            DB.getInstance().bookmarkDao().delete(dtoToBookmark(bookmarkDTO))
             refreshDataFromDB()
         }
     }
@@ -57,7 +57,7 @@ class BookmarkViewModel : ViewModel() {
         return _savedBookmarks.value.any { it.id == id }
     }
 
-    private fun refreshDataFromDB(){
+    private fun refreshDataFromDB() {
         val dbRes = DB.getInstance().bookmarkDao().getAll()
         _savedBookmarks.value = dbRes.map { bookmarkToDTO(it) }
     }

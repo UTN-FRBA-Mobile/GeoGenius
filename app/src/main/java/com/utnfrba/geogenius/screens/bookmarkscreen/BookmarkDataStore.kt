@@ -9,6 +9,4 @@ data class BookmarkDatastoreState(
 )
 
 
-class BookmarkDataStore (private val dataStore: DataStore<Preferences>){
-
-}
+class BookmarkDataStore(private val dataStore: DataStore<Preferences>)
