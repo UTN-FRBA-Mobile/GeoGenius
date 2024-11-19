@@ -36,8 +36,9 @@ fun GeoGeniusNavGraph(
             route = Screen.BookmarkDetail.route + "/{placeId}",
             arguments = listOf(navArgument("placeId") { type = NavType.StringType })
         ) { entry ->
+            val placeId = entry.arguments?.getString("placeId") ?: ""
             BookmarkDetailScreen(
-                id = entry.arguments?.getString("placeId"),
+                id = placeId,
                 onReturnClick = { navController.popBackStack() },
                 bookmarkViewModel = bookmarkViewModel,
             )

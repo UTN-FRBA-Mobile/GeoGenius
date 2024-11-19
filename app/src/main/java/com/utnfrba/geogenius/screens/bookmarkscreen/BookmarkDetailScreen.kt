@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
@@ -24,6 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,15 +50,16 @@ import com.google.accompanist.pager.rememberPagerState
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BookmarkDetailScreen(
-    id: String?,
+    id: String,
     onReturnClick: () -> Unit,
-    isBookmarkSaved: Boolean
+    bookmarkViewModel: BookmarkViewModel
 ) {
     val viewModel: BookmarkDetailViewModel = viewModel()
     val bookmark by viewModel.bookmark.collectAsState()
+    var saveOrDeleteIcon by remember{mutableStateOf(Icons.Filled.Add)}
 
     LaunchedEffect(id) {
-        if (id != null && bookmark == null) {
+        if (id != "" && bookmark == null) {
             viewModel.loadBookmark(id)
         }
     }
@@ -149,14 +155,19 @@ fun BookmarkDetailScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(text = it.longDescription, style = MaterialTheme.typography.bodyLarge)
-                    var onClickAction: () -> Unit = {}
-                    var saveOrDeleteIcon: ImageVector = Icons.Filled.Star
-                    if (isBookmarkSaved) {
-                       onClickAction = {}
-                        saveOrDeleteIcon = Icons.Filled.Star
+                    val onClickAction: () -> Unit
+                    if (bookmarkViewModel.isSaved(id)) {
+                       onClickAction = {
+                           bookmarkViewModel.deleteBookmark(it)
+                           saveOrDeleteIcon = Icons.Filled.Add
+                       }
+                        saveOrDeleteIcon = Icons.Filled.Delete
                     } else {
-                        onClickAction = {}
-                        saveOrDeleteIcon = Icons.Filled.Star
+                        onClickAction = {
+                            bookmarkViewModel.addBookmark(it)
+                            saveOrDeleteIcon = Icons.Filled.Delete
+                        }
+                        saveOrDeleteIcon = Icons.Filled.Add
                     }
                     FilledIconButton(
                         modifier = Modifier
@@ -179,8 +190,7 @@ fun BookmarkDetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun PlaceDetailScreenPreview() {
-    val navController = NavHostController(LocalContext.current)
     MaterialTheme {
-        BookmarkDetailScreen("placeId", navController)
+        BookmarkDetailScreen("placeId", {}, viewModel())
     }
 }

@@ -47,7 +47,7 @@ class BookmarkViewModel : ViewModel() {
         }
     }
 
-    fun isSaved(bookmarkDTO: BookmarkDTO): Boolean {
-        return _savedBookmarks.value.any { it.id == bookmarkDTO.id }
+    fun isSaved(id: String): Boolean {
+        return _savedBookmarks.value.any { it.id == id }
     }
 }
