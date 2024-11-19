@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -101,7 +102,8 @@ fun BookmarkDetailScreen(
                         Text(
                             text = it.name,
                             fontSize = 30.sp,
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(5.dp)
                         )
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -169,10 +171,12 @@ fun BookmarkDetailScreen(
                         }
                         saveOrDeleteIcon = Icons.Filled.Add
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                     FilledIconButton(
                         modifier = Modifier
-                            .padding(start = 4.dp)
-                            .size(30.dp),
+                            .padding(8.dp)
+                            .size(30.dp)
+                            .align(Alignment.End),
                         onClick = onClickAction,
                         content = {
                             Icon(

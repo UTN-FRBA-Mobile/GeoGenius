@@ -10,7 +10,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -18,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.utnfrba.geogenius.appnavigation.Screen
@@ -28,7 +32,14 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
     Column {
-        Text("My bookmarks") // TODO make it prettier
+        Text(
+            text = "My Bookmarks",
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            ),
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+        )
         Spacer(modifier = Modifier.padding(5.dp))
         LoadingBookmarkComposable(bookmarkViewModel, saved = true) {
             if (it.value.isNotEmpty()) {
@@ -47,7 +58,10 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
                     }
                 }
             } else {
-                Text("You don't have any bookmarks")
+                Text(
+                    text="You don't have any bookmarks!",
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                )
             }
         }
     }
