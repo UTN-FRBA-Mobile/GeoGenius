@@ -19,6 +19,7 @@ playServicesMaps = "18.1.0"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
 playServicesMapsVersion = "19.0.0"
+roomVersion = "2.6.1"
 secretsGradlePlugin = "2.0.1"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
@@ -29,6 +30,7 @@ playServicesLocation = "21.3.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceMaterial3" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceMaterial3" }

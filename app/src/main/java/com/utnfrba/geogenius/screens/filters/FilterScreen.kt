@@ -36,7 +36,7 @@ fun FilterScreen(
                 onCheckedChange = {
                     filterViewModel.saveFilterValue(it, PreferencesKeys.CAFE_CHECKED)
                 },
-                label = "Cafés"
+                label = "Cafes"
             )
 
             CheckboxWithLabel(
@@ -44,7 +44,7 @@ fun FilterScreen(
                 onCheckedChange = {
                     filterViewModel.saveFilterValue(it, PreferencesKeys.MUSEUM_CHECKED)
                 },
-                label = "Museos"
+                label = "Museums"
             )
 
             CheckboxWithLabel(
@@ -52,7 +52,7 @@ fun FilterScreen(
                 onCheckedChange = {
                     filterViewModel.saveFilterValue(it, PreferencesKeys.PARK_CHECKED)
                 },
-                label = "Parques"
+                label = "Parks"
             )
 
             SettingsMenu(filterViewModel)

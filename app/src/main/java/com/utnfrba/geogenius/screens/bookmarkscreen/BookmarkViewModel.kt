@@ -3,6 +3,9 @@ package com.utnfrba.geogenius.screens.bookmarkscreen
 import BookmarkRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.utnfrba.geogenius.database.DB
+import com.utnfrba.geogenius.database.dtoToBookmark
+import com.utnfrba.geogenius.database.bookmarkToDTO
 import com.utnfrba.geogenius.model.BookmarkDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +21,9 @@ class BookmarkViewModel : ViewModel() {
     private val _bookmarks = MutableStateFlow<List<BookmarkDTO>>(emptyList())
     val bookmarks: StateFlow<List<BookmarkDTO>> = _bookmarks
 
+    private val _savedBookmarks = MutableStateFlow<List<BookmarkDTO>>(mutableListOf())
+    val savedBookmarks: StateFlow<List<BookmarkDTO>> = _savedBookmarks
+
     init {
         viewModelScope.launch {
             _isLoading.value = true
@@ -28,7 +34,31 @@ class BookmarkViewModel : ViewModel() {
                 _errorMessage.value =
                     "Error loading bookmarks: ${result.exceptionOrNull()?.localizedMessage}"
             }
+            refreshDataFromDB()
             _isLoading.value = false
         }
+    }
+
+    fun addBookmark(bookmarkDTO: BookmarkDTO) {
+        viewModelScope.launch {
+            DB.getInstance().bookmarkDao().add(dtoToBookmark(bookmarkDTO))
+            refreshDataFromDB()
+        }
+    }
+
+    fun deleteBookmark(bookmarkDTO: BookmarkDTO) {
+        viewModelScope.launch {
+            DB.getInstance().bookmarkDao().delete(dtoToBookmark(bookmarkDTO))
+            refreshDataFromDB()
+        }
+    }
+
+    fun isSaved(id: String): Boolean {
+        return _savedBookmarks.value.any { it.id == id }
+    }
+
+    private fun refreshDataFromDB() {
+        val dbRes = DB.getInstance().bookmarkDao().getAll()
+        _savedBookmarks.value = dbRes.map { bookmarkToDTO(it) }
     }
 }

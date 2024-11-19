@@ -23,7 +23,7 @@ fun SettingsMenu(filterViewModel: FilterViewModel = viewModel(factory = FilterVi
             .padding(20.dp)
     ) {
         Column {
-            Text("Cantidad de bookmarks en widget")
+            Text("Amount of bookmarks in widget")
             Slider(
                 value = filterState.widgetCount.toFloat(),
                 onValueChange = {

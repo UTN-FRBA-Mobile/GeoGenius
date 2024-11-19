@@ -30,8 +30,8 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
-import com.utnfrba.geogenius.screens.LoadingBookmarkComposable
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
+import com.utnfrba.geogenius.screens.bookmarkscreen.LoadingBookmarkComposable
 
 @Composable
 fun MapScreen(navController: NavController) {
@@ -74,7 +74,7 @@ fun MapScreen(navController: NavController) {
             )
         }
     }
-    LoadingBookmarkComposable(bookmarkViewModel) { b ->
+    LoadingBookmarkComposable(bookmarkViewModel, saved = false) { b ->
         val bookmarks = b.value
         var markers: List<Marker?> = listOf()
         Box {
