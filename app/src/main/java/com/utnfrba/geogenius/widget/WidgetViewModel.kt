@@ -1,15 +1,10 @@
 package com.utnfrba.geogenius.widget
 
-import android.R
 import android.annotation.SuppressLint
-import android.app.PendingIntent
-import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.glance.GlanceId
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +19,7 @@ object WidgetViewModel : ViewModel() {
         viewModelScope.launch {
             Log.i("WidgetViewModel", "Updating widget")
             GeoGeniusWidget().update(context, id)
-            Log.i("WidgetViewModel","Updated")
+            Log.i("WidgetViewModel", "Updated")
         }
     }
 

@@ -6,7 +6,6 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
@@ -155,7 +154,7 @@ object CustomGlanceStateDefinition : GlanceStateDefinition<Preferences> {
     override fun getLocation(context: Context, fileKey: String): File {
         return File(context.applicationContext.filesDir, "datastore/$DATASTORE_NAME")
     }
-    
+
 }
 
 fun formatDistance(kms: Double): String {

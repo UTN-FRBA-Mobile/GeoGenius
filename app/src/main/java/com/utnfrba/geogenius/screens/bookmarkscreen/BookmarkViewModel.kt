@@ -4,8 +4,8 @@ import BookmarkRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.utnfrba.geogenius.database.DB
-import com.utnfrba.geogenius.database.dtoToBookmark
 import com.utnfrba.geogenius.database.bookmarkToDTO
+import com.utnfrba.geogenius.database.dtoToBookmark
 import com.utnfrba.geogenius.model.BookmarkDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
