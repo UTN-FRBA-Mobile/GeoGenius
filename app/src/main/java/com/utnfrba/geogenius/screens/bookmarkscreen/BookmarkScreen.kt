@@ -17,12 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
 
@@ -30,7 +32,7 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostController) {
     Column {
         Text(
-            text = "My Bookmarks",
+            text = stringResource(R.string.BookmarkTitle),
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
@@ -56,7 +58,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel, navController: NavHostC
                 }
             } else {
                 Text(
-                    text = "You don't have any bookmarks!",
+                    text = stringResource(R.string.emptyBookmarks),
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
                 )
             }
@@ -89,7 +91,7 @@ fun LoadingBookmarkComposable(
         }
 
         errorMessage.value != null -> {
-            Text(text = "Error: ${errorMessage.value}", color = Color.Red)
+            Text(text = stringResource(R.string.checkConnection))
         }
 
         else -> {

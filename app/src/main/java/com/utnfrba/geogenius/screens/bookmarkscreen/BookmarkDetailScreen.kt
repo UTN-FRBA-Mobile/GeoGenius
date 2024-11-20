@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.utnfrba.geogenius.R
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -71,7 +73,7 @@ fun BookmarkDetailScreen(
         }
 
         viewModel.errorMessage != null -> {
-            Text(text = "Error: ${viewModel.errorMessage}", color = Color.Red)
+            Text(text = stringResource(R.string.checkConnection))
         }
 
         else -> {
@@ -91,7 +93,7 @@ fun BookmarkDetailScreen(
                         IconButton(onClick = onReturnClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Volver"
+                                contentDescription = stringResource(R.string.returnArrow)
                             )
                         }
                         Text(
