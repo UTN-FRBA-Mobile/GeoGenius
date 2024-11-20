@@ -31,8 +31,8 @@ A continuación, algunas de las dependencias utilizadas en GeoGenius, especifica
 
 ## Integrantes
 - **Cafici, Felipe** (175.652-7)
-- **Ferrante, Ignacio** ()
-- **Schuhmann, Juan Ignacio** ()
+- **Ferrante, Ignacio** (171.524-0)
+- **Schuhmann, Juan Ignacio** (176.513-9)
 
 Desarrollo de Aplicaciones para Dispositivos Móviles - K5551 (2024 - 2C)
 
