@@ -52,7 +52,7 @@ GeoGenius es la aplicación perfecta para los amantes de la exploración y la av
 
 - 🌐 **Mapa interactivo**: Explora y encuentra lugares de interés cerca de ti.
 - 📍 **Bookmarks**: Guarda tus lugares favoritos y accede a ellos cuando quieras.
-- 🎯 **Filtros inteligentes**: Encuentra exactamente lo que buscas, filtrando los lugares mostrados en el mapa según tus preferencias.
+- 🎯 **Filtros personalizables**: Encuentra exactamente lo que buscas, filtrando los lugares mostrados en el mapa según tus preferencias.
 - 📲 **Widget de Bookmarks**: Accede rápidamente a la dirección y distancia de tus lugares favoritos directamente desde la pantalla de inicio de tu dispositivo.
 
 Descarga GeoGenius ahora y empieza a explorar!
