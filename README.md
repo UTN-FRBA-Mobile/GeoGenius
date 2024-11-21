@@ -58,7 +58,11 @@ GeoGenius es la aplicación perfecta para los amantes de la exploración y la av
 Descarga GeoGenius ahora y empieza a explorar!
 
 ### Screenshots
+<img src="https://github.com/user-attachments/assets/8df98f15-4d41-4662-85fa-8bdfa21fbd22" alt="Mapa" style="width:190px;">
+<img src="https://github.com/user-attachments/assets/bfb19fd8-12a8-4058-8b98-a360af7e0ace" alt="Búsqueda" style="width:190px;">
+<img src="https://github.com/user-attachments/assets/400ad7dc-cdb4-40a4-9bd2-a5019007a125" alt="Bookmarks" style="width:190px;">
+<img src="https://github.com/user-attachments/assets/893408b6-a8b2-4bad-a908-e0fd52a7ea8f" alt="Bookmark" style="width:190px;">
+<img src="https://github.com/user-attachments/assets/a2e07f2c-d680-4063-a737-f73347d000e3" alt="Ajustes widget" style="width:190px;">
 
-**TODO: screenshots**
 
 ### ¡Descárgala ahora y empieza a explorar el mundo a tu alrededor!
