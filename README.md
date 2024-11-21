@@ -17,7 +17,7 @@ GeoGenius es una aplicación móvil nativa desarrollada para Android en Kotlin, 
 - **SQLite**: Para almacenar los bookmarks localmente en el dispositivo.
 - **Android Jetpack Compose**: Incluyendo ViewModel, Navigation, y DataStore.
 - **Retrofit**: Para la comunicación con APIs externas.
-- **Glance AppWidget**: Para la creación del widget que muestra información sobre los bookmarks.
+- **Glance**: Para la creación del widget que muestra información sobre los bookmarks.
 
 ## Dependencias
 
