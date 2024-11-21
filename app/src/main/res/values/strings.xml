@@ -17,5 +17,6 @@
     <string name="museumFilter">Museums</string>
     <string name="parkFilter">Parks</string>
     <string name="returnArrow">Return</string>
+    <string name="searchPlaceholder">Search bookmarks</string>
 
 </resources>

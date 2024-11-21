@@ -101,8 +101,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
                     )
                     TitleBar(
                         startIcon = ImageProvider(R.drawable.baseline_bookmark_24),
-                        // TODO use stringResource before composition otherwise the widget crashes
-                        title = "Places near you",
+                        title = LocalContext.current.getString(R.string.widgetTitle),
                         textColor = GlanceTheme.colors.onSurface,
                     )
                 }
@@ -110,7 +109,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
         ) {
             if (currentDirection.latitude == 0.0 && currentDirection.longitude == 0.0) {
                 Text(
-                    "Could not get location",
+                    LocalContext.current.getString(R.string.locationError),
                     style = TextStyle(color = ColorProvider(Color.White))
                 )
             } else {
