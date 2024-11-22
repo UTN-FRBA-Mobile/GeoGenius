@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,10 +34,14 @@ import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.LoadingBookmarkComposable
+import com.utnfrba.geogenius.screens.filters.FilterState
+import com.utnfrba.geogenius.screens.filters.FilterViewModel
 
 @Composable
 fun MapScreen(navController: NavController) {
     val bookmarkViewModel: BookmarkViewModel = viewModel()
+    val filterViewModel: FilterViewModel = viewModel(factory = FilterViewModel.Factory)
+    val viewModelState by filterViewModel.uiState.collectAsState()
 
     val context = LocalContext.current
     val mapView = rememberMapViewWithLifecycle(context)
@@ -75,7 +81,7 @@ fun MapScreen(navController: NavController) {
         }
     }
     LoadingBookmarkComposable(bookmarkViewModel, saved = false) { b ->
-        val bookmarks = b.value
+        val bookmarks = getFilteredBookmarks(b, viewModelState)
         var markers: List<Marker?> = listOf()
         Box {
             AndroidView({ mapView }) {
@@ -140,6 +146,16 @@ fun MapScreen(navController: NavController) {
                     }
                 })
         }
+    }
+}
+
+@Composable
+private fun getFilteredBookmarks(b: State<List<BookmarkDTO>>, viewModelState: FilterState): List<BookmarkDTO> {
+    return b.value.filter { bookmark ->
+        (bookmark.type == "cafe" && viewModelState.cafeChecked)
+                || (bookmark.type == "museum" && viewModelState.museumChecked)
+                || (bookmark.type == "park" && viewModelState.parkChecked)
+
     }
 }
 
