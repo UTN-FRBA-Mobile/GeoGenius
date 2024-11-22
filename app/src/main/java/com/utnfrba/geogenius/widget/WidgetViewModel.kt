@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 object WidgetViewModel : ViewModel() {
     private var cachedLocation: Coordinate = Coordinate(0.0, 0.0)
     fun updateWidget(context: Context, id: GlanceId) {
-        this.updateLocation(context, id)
+        this.updateLocation(context)
         viewModelScope.launch {
             Log.i("WidgetViewModel", "Updating widget")
             GeoGeniusWidget().update(context, id)
@@ -28,7 +28,7 @@ object WidgetViewModel : ViewModel() {
     }
 
     @SuppressLint("MissingPermission")
-    fun updateLocation(context: Context, id: GlanceId) {
+    fun updateLocation(context: Context) {
         val locationManager: LocationManager =
             context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val providers: List<String> = locationManager.getProviders(true)

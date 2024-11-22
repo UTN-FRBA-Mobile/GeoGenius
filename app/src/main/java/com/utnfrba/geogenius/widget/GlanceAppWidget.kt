@@ -58,7 +58,7 @@ class GeoGeniusWidget : GlanceAppWidget() {
         provideContent {
             val prefs = currentState<Preferences>()
             val widgetCount = remember { prefs[PreferencesKeys.WIDGET_COUNT] ?: 1 }
-            WidgetViewModel.updateLocation(context, id)
+            WidgetViewModel.updateLocation(context)
             val currentDirection = WidgetViewModel.getCachedLocation()
             Content(
                 getSortedBookmarks(currentDirection),
