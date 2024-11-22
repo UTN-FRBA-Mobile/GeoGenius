@@ -34,6 +34,7 @@ import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
 import com.utnfrba.geogenius.screens.bookmarkscreen.LoadingBookmarkComposable
 import com.utnfrba.geogenius.screens.filters.FilterState
 import com.utnfrba.geogenius.screens.filters.FilterViewModel
+import com.utnfrba.geogenius.screens.filters.FiltersRepository
 
 @Composable
 fun MapScreen(
@@ -80,7 +81,7 @@ fun MapScreen(
         }
     }
     LoadingBookmarkComposable(bookmarkViewModel, saved = false) { b ->
-        val bookmarks = getFilteredBookmarks(b.value, filters.value)
+        val bookmarks = b.value.filter { FiltersRepository.isEnabled(it.type) }
         var markers: List<Marker?> = listOf()
         Box {
             AndroidView({ mapView }) {
@@ -147,22 +148,6 @@ fun MapScreen(
         }
     }
 }
-
-@Composable
-private fun getFilteredBookmarks(
-    b: List<BookmarkDTO>,
-    viewModelState: FilterState
-): List<BookmarkDTO> {
-    return b.filter {
-        when (it.type) {
-            "cafe" -> viewModelState.cafeChecked
-            "museum" -> viewModelState.museumChecked
-            "park" -> viewModelState.parkChecked
-            else -> false
-        }
-    }
-}
-
 
 private fun createMarkersFromBookmarks(
     googleMap: GoogleMap,
