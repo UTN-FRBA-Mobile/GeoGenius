@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -38,11 +36,12 @@ import com.utnfrba.geogenius.screens.filters.FilterState
 import com.utnfrba.geogenius.screens.filters.FilterViewModel
 
 @Composable
-fun MapScreen(navController: NavController) {
-    val bookmarkViewModel: BookmarkViewModel = viewModel()
-    val filterViewModel: FilterViewModel = viewModel(factory = FilterViewModel.Factory)
-    val viewModelState by filterViewModel.uiState.collectAsState()
-
+fun MapScreen(
+    navController: NavController,
+    bookmarkViewModel: BookmarkViewModel,
+    filterViewModel: FilterViewModel
+) {
+    val filters = filterViewModel.uiState.collectAsState()
     val context = LocalContext.current
     val mapView = rememberMapViewWithLifecycle(context)
     lateinit var gMap: GoogleMap
@@ -81,7 +80,7 @@ fun MapScreen(navController: NavController) {
         }
     }
     LoadingBookmarkComposable(bookmarkViewModel, saved = false) { b ->
-        val bookmarks = getFilteredBookmarks(b, viewModelState)
+        val bookmarks = getFilteredBookmarks(b.value, filters.value)
         var markers: List<Marker?> = listOf()
         Box {
             AndroidView({ mapView }) {
@@ -150,12 +149,17 @@ fun MapScreen(navController: NavController) {
 }
 
 @Composable
-private fun getFilteredBookmarks(b: State<List<BookmarkDTO>>, viewModelState: FilterState): List<BookmarkDTO> {
-    return b.value.filter { bookmark ->
-        (bookmark.type == "cafe" && viewModelState.cafeChecked)
-                || (bookmark.type == "museum" && viewModelState.museumChecked)
-                || (bookmark.type == "park" && viewModelState.parkChecked)
-
+private fun getFilteredBookmarks(
+    b: List<BookmarkDTO>,
+    viewModelState: FilterState
+): List<BookmarkDTO> {
+    return b.filter {
+        when (it.type) {
+            "cafe" -> viewModelState.cafeChecked
+            "museum" -> viewModelState.museumChecked
+            "park" -> viewModelState.parkChecked
+            else -> false
+        }
     }
 }
 
