@@ -12,15 +12,16 @@ private fun degreesToRadians(degrees: Double): Double {
     return degrees * Math.PI / 180
 }
 
-// Uses http://en.wikipedia.org/wiki/Haversine_formula
+/**
+ * Uses Haversine formula
+ */
 fun distanceInKmBetweenEarthCoordinates(c1: Coordinate, c2: Coordinate): Double {
     val earthRadiusKm = 6371.0
+    val dLat = degreesToRadians(c2.longitude - c1.longitude)
+    val dLon = degreesToRadians(c2.latitude - c1.latitude)
 
-    val dLat = degreesToRadians(c2.x - c1.x)
-    val dLon = degreesToRadians(c2.y - c2.y)
-
-    val lat1Rad = degreesToRadians(c1.x)
-    val lat2Rad = degreesToRadians(c2.x)
+    val lat1Rad = degreesToRadians(c1.longitude)
+    val lat2Rad = degreesToRadians(c2.longitude)
 
     val a = sin(dLat / 2) * sin(dLat / 2) +
             sin(dLon / 2) * sin(dLon / 2) * cos(lat1Rad) * cos(lat2Rad)
@@ -37,12 +38,18 @@ enum class ArrowDirection(val icon: Int) {
 }
 
 fun getDirectionToReach(destination: Coordinate, origin: Coordinate): ArrowDirection {
-    val xDifference = destination.x - origin.x
-    val yDifference = destination.y - origin.y
+    val xDifference = destination.latitude - origin.latitude
+    val yDifference = destination.longitude - origin.longitude
 
     return if (xDifference.absoluteValue > yDifference.absoluteValue) {
         if (yDifference > 0) ArrowDirection.UP else ArrowDirection.DOWN
     } else {
         if (xDifference > 0) ArrowDirection.RIGHT else ArrowDirection.LEFT
     }
+}
+
+fun round(number: Double, decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return kotlin.math.round(number * multiplier) / multiplier
 }

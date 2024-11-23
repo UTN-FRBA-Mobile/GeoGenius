@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.utnfrba.geogenius.R
 import com.utnfrba.geogenius.screens.filters.FilterViewModel
 
 @Composable
@@ -23,7 +25,7 @@ fun SettingsMenu(filterViewModel: FilterViewModel = viewModel(factory = FilterVi
             .padding(20.dp)
     ) {
         Column {
-            Text("Cantidad de bookmarks en widget")
+            Text(stringResource(R.string.countSlider))
             Slider(
                 value = filterState.widgetCount.toFloat(),
                 onValueChange = {

@@ -1,8 +1,22 @@
 <resources>
     <string name="app_name">GeoGenius</string>
+    <string name="appwidget_text">Bookmarks</string>
+    <string name="add_widget">GeoGenius</string>
+    <string name="app_widget_description">See places near you</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="BookmarkTitle">My bookmarks</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="checkConnection">Could not get bookmarks.\nPlease check your internet connection</string>
+    <string name="emptyBookmarks">You don\'t have any bookmarks!</string>
+    <string name="filterLabel">Filters</string>
+    <string name="mapLabel">Map</string>
+    <string name="bookmarkLabel">Bookmarks</string>
+    <string name="locationError">Could not get location</string>
+    <string name="widgetTitle">Places near you</string>
+    <string name="countSlider">Amount of bookmarks in widget</string>
+    <string name="cafeFilter">Cafes</string>
+    <string name="museumFilter">Museums</string>
+    <string name="parkFilter">Parks</string>
+    <string name="returnArrow">Return</string>
+    <string name="searchPlaceholder">Search bookmarks</string>
+
 </resources>

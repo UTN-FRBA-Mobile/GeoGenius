@@ -19,6 +19,9 @@ data class BookmarkDTO(
 
 @Serializable
 data class Coordinate(
-    val x: Double,
-    val y: Double
+    @SerialName("x")
+    val latitude: Double,
+
+    @SerialName("y")
+    val longitude: Double
 )

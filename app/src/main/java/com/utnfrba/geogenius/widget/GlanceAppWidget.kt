@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -32,6 +31,8 @@ import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.utnfrba.geogenius.MainActivity
 import com.utnfrba.geogenius.R
@@ -40,9 +41,9 @@ import com.utnfrba.geogenius.model.BookmarkDTO
 import com.utnfrba.geogenius.model.Coordinate
 import com.utnfrba.geogenius.screens.filters.DATASTORE_NAME
 import com.utnfrba.geogenius.screens.filters.PreferencesKeys
+import com.utnfrba.geogenius.screens.filters.dataStore
 import java.io.File
 import kotlin.math.min
-import kotlin.math.roundToInt
 
 class GlanceAppWidget : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = GeoGeniusWidget()
@@ -57,11 +58,12 @@ class GeoGeniusWidget : GlanceAppWidget() {
         provideContent {
             val prefs = currentState<Preferences>()
             val widgetCount = remember { prefs[PreferencesKeys.WIDGET_COUNT] ?: 1 }
-            val currentDirection = Coordinate(x = -34.63425283577223, y = -58.44339997962344)  // TODO get from phone
+            WidgetViewModel.updateLocation(context)
+            val currentDirection = WidgetViewModel.getCachedLocation()
             Content(
                 getSortedBookmarks(currentDirection),
                 widgetCount,
-                { WidgetViewModel().updateWidget(context, id) },
+                { WidgetViewModel.updateWidget(context, id) },
                 currentDirection
             )
         }
@@ -69,7 +71,12 @@ class GeoGeniusWidget : GlanceAppWidget() {
 
     private fun getSortedBookmarks(currentDirection: Coordinate): List<BookmarkDTO> {
         val list: List<BookmarkDTO> = BookmarkRepository.getCachedBookmarks() ?: listOf()
-        return list.sortedBy { b -> distanceInKmBetweenEarthCoordinates(b.coordinates, currentDirection)}
+        return list.sortedBy { b ->
+            distanceInKmBetweenEarthCoordinates(
+                b.coordinates,
+                currentDirection
+            )
+        }
     }
 
     @Composable
@@ -94,16 +101,23 @@ class GeoGeniusWidget : GlanceAppWidget() {
                     )
                     TitleBar(
                         startIcon = ImageProvider(R.drawable.baseline_bookmark_24),
-                        title = "My bookmarks",
+                        title = LocalContext.current.getString(R.string.widgetTitle),
                         textColor = GlanceTheme.colors.onSurface,
                     )
                 }
             }
         ) {
-            Column(modifier = GlanceModifier.padding(5.dp)) {
-                bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
-                    CardRow(b, currentDirection)
-                    Spacer(modifier = GlanceModifier.padding(5.dp))
+            if (currentDirection.latitude == 0.0 && currentDirection.longitude == 0.0) {
+                Text(
+                    LocalContext.current.getString(R.string.locationError),
+                    style = TextStyle(color = ColorProvider(Color.White))
+                )
+            } else {
+                Column(modifier = GlanceModifier.padding(5.dp)) {
+                    bookmarks.slice(0..<min(widgetCount, bookmarks.size)).forEach { b ->
+                        CardRow(b, currentDirection)
+                        Spacer(modifier = GlanceModifier.padding(5.dp))
+                    }
                 }
             }
         }
@@ -119,7 +133,7 @@ private fun CardRow(
     val kms = distanceInKmBetweenEarthCoordinates(bookmark.coordinates, currentDirection)
     val arrowDirection = getDirectionToReach(bookmark.coordinates, currentDirection).icon
     FilledButton(
-        text = kms.roundToInt().toString() + " km: " + bookmark.name,
+        text = "${formatDistance(kms)}: ${bookmark.name}",
         onClick = actionStartActivity(
             Intent(LocalContext.current.applicationContext, MainActivity::class.java)
                 .setAction(Intent.ACTION_VIEW)
@@ -139,8 +153,13 @@ object CustomGlanceStateDefinition : GlanceStateDefinition<Preferences> {
     override fun getLocation(context: Context, fileKey: String): File {
         return File(context.applicationContext.filesDir, "datastore/$DATASTORE_NAME")
     }
+
 }
 
-private val Context.dataStore: DataStore<Preferences>
-        by preferencesDataStore(name = DATASTORE_NAME)
-
+fun formatDistance(kms: Double): String {
+    return if (kms >= 1) {
+        "${round(kms, 1)} km"
+    } else {
+        "${(kms * 1000).toInt()} m"
+    }
+}

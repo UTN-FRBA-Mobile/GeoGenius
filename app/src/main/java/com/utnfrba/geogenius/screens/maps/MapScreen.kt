@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -26,16 +26,22 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.utnfrba.geogenius.appnavigation.Screen
 import com.utnfrba.geogenius.model.BookmarkDTO
-import com.utnfrba.geogenius.screens.LoadingBookmarkComposable
 import com.utnfrba.geogenius.screens.bookmarkscreen.BookmarkViewModel
+import com.utnfrba.geogenius.screens.bookmarkscreen.LoadingBookmarkComposable
+import com.utnfrba.geogenius.screens.filters.FilterState
+import com.utnfrba.geogenius.screens.filters.FilterViewModel
 
 @Composable
-fun MapScreen(navController: NavController) {
-    val bookmarkViewModel: BookmarkViewModel = viewModel()
-
+fun MapScreen(
+    navController: NavController,
+    bookmarkViewModel: BookmarkViewModel,
+    filterViewModel: FilterViewModel
+) {
+    val filters = filterViewModel.uiState.collectAsState()
     val context = LocalContext.current
     val mapView = rememberMapViewWithLifecycle(context)
     lateinit var gMap: GoogleMap
@@ -73,8 +79,9 @@ fun MapScreen(navController: NavController) {
             )
         }
     }
-    LoadingBookmarkComposable(bookmarkViewModel) { b ->
-        val bookmarks = b.value
+    LoadingBookmarkComposable(bookmarkViewModel, saved = false) { b ->
+        val bookmarks = getFilteredBookmarks(b.value, filters.value)
+        var markers: List<Marker?> = listOf()
         Box {
             AndroidView({ mapView }) {
                 mapView.getMapAsync { googleMap: GoogleMap ->
@@ -97,16 +104,19 @@ fun MapScreen(navController: NavController) {
                                 )
                             }
                         }.addOnFailureListener {
-                            Log.e("MapScreen", "Error al intentar obtener la ubicación: ${it.message}")
+                            Log.e(
+                                "MapScreen",
+                                "Error al intentar obtener la ubicación: ${it.message}"
+                            )
                         }
                     }
-
-                    addBookmarksToMap(googleMap, bookmarks
-                    ) { marker ->
-                        marker.showInfoWindow()
+                    markers = createMarkersFromBookmarks(
+                        googleMap, bookmarks,
+                    )
+                    googleMap.setOnMarkerClickListener { marker ->
                         val markerLocation = marker.position
                         val bookmark = bookmarks.find { b ->
-                            b.coordinates.x == markerLocation.latitude && b.coordinates.y == markerLocation.longitude
+                            b.coordinates.latitude == markerLocation.latitude && b.coordinates.longitude == markerLocation.longitude
                         }
                         if (bookmark != null) {
                             navController.navigate(Screen.BookmarkDetail.route + "/${bookmark.id}")
@@ -115,33 +125,55 @@ fun MapScreen(navController: NavController) {
                     }
                 }
             }
-            // old: { id: String -> navController.navigate(Screen.BookmarkDetail.route + "/${id}") }
+
             SearchBarComponent(
                 bookmarks,
                 { id: String ->
                     val bookmark = bookmarks.find { b -> b.id == id }
+                    val bookmarkIndex = bookmarks.indexOf(bookmark)
                     if (bookmark != null) {
                         gMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
-                                LatLng(bookmark.coordinates.x, bookmark.coordinates.y),
+                                LatLng(
+                                    bookmark.coordinates.latitude,
+                                    bookmark.coordinates.longitude
+                                ),
                                 15f
                             )
                         )
+                        markers[bookmarkIndex]?.showInfoWindow()
                     }
                 })
         }
     }
 }
 
+@Composable
+private fun getFilteredBookmarks(
+    b: List<BookmarkDTO>,
+    viewModelState: FilterState
+): List<BookmarkDTO> {
+    return b.filter {
+        when (it.type) {
+            "cafe" -> viewModelState.cafeChecked
+            "museum" -> viewModelState.museumChecked
+            "park" -> viewModelState.parkChecked
+            else -> false
+        }
+    }
+}
 
-private fun addBookmarksToMap(googleMap: GoogleMap, bookmarks: List<BookmarkDTO>, onMarkerClick: GoogleMap.OnMarkerClickListener) {
-    for (bookmark in bookmarks) {
-        val position = LatLng(bookmark.coordinates.x, bookmark.coordinates.y)
+
+private fun createMarkersFromBookmarks(
+    googleMap: GoogleMap,
+    bookmarks: List<BookmarkDTO>
+): List<Marker?> {
+    return bookmarks.map { bookmark ->
+        val position = LatLng(bookmark.coordinates.latitude, bookmark.coordinates.longitude)
         val markerOptions = MarkerOptions()
             .position(position)
             .title(bookmark.name)
         googleMap.addMarker(markerOptions)
-        googleMap.setOnMarkerClickListener(onMarkerClick)
     }
 }
 
