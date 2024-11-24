@@ -86,8 +86,6 @@ fun BookmarkDetailScreen(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = onReturnClick) {
@@ -100,13 +98,18 @@ fun BookmarkDetailScreen(
                             text = it.name,
                             fontSize = 30.sp,
                             style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.padding(5.dp)
+                            modifier = Modifier.padding(start = 30.dp)
                         )
-
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Text(text = it.address, style = MaterialTheme.typography.bodyLarge)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = it.rating.toString(),
-                                fontSize = 30.sp,
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold
                             )
@@ -116,11 +119,10 @@ fun BookmarkDetailScreen(
                                 tint = Color.hsv(50f, 0.8f, 0.8f),
                                 modifier = Modifier
                                     .padding(start = 4.dp)
-                                    .size(30.dp)
                             )
                         }
                     }
-                    Text(text = it.address, style = MaterialTheme.typography.bodyLarge)
+
                     Spacer(modifier = Modifier.height(8.dp))
 
                     val pagerState = rememberPagerState()
