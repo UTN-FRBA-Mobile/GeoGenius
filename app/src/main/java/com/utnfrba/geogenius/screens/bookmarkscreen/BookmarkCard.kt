@@ -40,7 +40,7 @@ fun BookmarkCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(4.dp)
+            .padding(16.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)

@@ -102,6 +102,13 @@ fun MapScreen(
                                     "MapScreen",
                                     "No se pudo obtener la ubicación actual. Asegurate de que la ubicación está activada en el dispositivo."
                                 )
+                                googleMap.moveCamera(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                        // Load Buenos Aires by default
+                                        LatLng(-34.6019, -58.3959),
+                                        11f
+                                    )
+                                )
                             }
                         }.addOnFailureListener {
                             Log.e(
