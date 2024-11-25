@@ -66,3 +66,6 @@ Descarga GeoGenius ahora y empieza a explorar!
 
 
 ### ¡Descárgala ahora y empieza a explorar el mundo a tu alrededor!
+
+## Backend
+Si la URL falla, se puede levantar este [backend](https://github.com/jschuhmann47/geogenius-rest-api) o se nos notifica y creamos otra instancia de mocky ya que las mismas vencen.
