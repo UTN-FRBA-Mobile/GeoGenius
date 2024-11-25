@@ -8,10 +8,10 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 
 private const val BASE_URL =
-    "http://192.168.0.17:3000"
+    "https://run.mocky.io"
 
 interface BookmarkApiService {
-    @GET("/")
+    @GET("/v3/0af6b729-1ed6-4165-8859-f42b89615461")
     suspend fun getBookmarks(): List<BookmarkDTO>
 }
 
